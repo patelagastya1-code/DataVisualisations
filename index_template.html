@@ -553,6 +553,54 @@
             color: var(--bg-primary);
         }
         .country-modal-done:hover { background: rgba(230,230,230,1); }
+        .country-modal-select-all,
+        .country-modal-deselect-all {
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-secondary);
+        }
+        .country-modal-select-all:hover,
+        .country-modal-deselect-all:hover { background: rgba(255,255,255,0.05); color: var(--white); }
+        .country-modal.wider { max-width: 600px; }
+        .country-modal-main-content {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            gap: 1rem;
+        }
+        .country-modal-countries-col {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .country-modal-continent-medians {
+            width: 180px;
+            flex-shrink: 0;
+            padding: 0.5rem 1rem;
+            border-left: 1px solid rgba(255,255,255,0.08);
+            display: none;
+        }
+        .country-modal-continent-medians.visible {
+            display: block;
+        }
+        .country-modal-continent-medians .continent-median-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .country-modal-continent-medians .continent-median-row:hover { color: var(--white); }
+        .country-modal-continent-medians .continent-median-row input { accent-color: var(--white); cursor: pointer; }
         .year-display {
             font-family: 'Sora', sans-serif;
             font-weight: 600;
@@ -785,9 +833,76 @@
             height: 100% !important;
         }
 
+        /* Time series line chart page */
+        .timeseries-page .container { max-width: 1400px; margin: 0 auto; }
+        .timeseries-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.5rem;
+            background: rgba(17,17,17,0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+        }
+        .timeseries-controls label { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
+        .timeseries-chart-toggle-wrap { display: flex; gap: 0.5rem; align-items: center; }
+        .timeseries-chart-toggle-wrap .timeseries-toggle-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(26,26,26,0.9);
+            color: var(--text-primary);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 8px;
+        }
+        .timeseries-chart-toggle-wrap .timeseries-toggle-btn.active {
+            background: var(--white);
+            color: var(--bg-primary);
+            border-color: var(--white);
+        }
+        .timeseries-chart-toggle-wrap .timeseries-toggle-btn:hover:not(.active) {
+            background: rgba(42,42,42,0.9);
+            color: var(--white);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        .timeseries-chart-wrap {
+            width: 100%;
+            height: 580px;
+            position: relative;
+            background: rgba(17,17,17,0.25);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+        }
+        .timeseries-chart-wrap .plotly,
+        .timeseries-chart-wrap .js-plotly-plot,
+        .timeseries-chart-wrap > div {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .timeseries-description {
+            margin-top: 1rem;
+            padding: 1rem 1.25rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+        }
+        .timeseries-description strong { color: var(--text-primary); }
+
         .chart-container .hoverlayer .hovertext,
         .pie-chart-single-wrap .hoverlayer .hovertext,
-        .maps-chart-wrap .hoverlayer .hovertext {
+        .maps-chart-wrap .hoverlayer .hovertext,
+        .timeseries-chart-wrap .hoverlayer .hovertext {
             font-family: 'DM Sans', sans-serif !important;
             padding: 16px 18px !important;
             font-size: 12px !important;
@@ -826,9 +941,9 @@
                     <span class="btn-text">Choropleth Maps</span>
                     <span class="btn-desc">World maps colored by GDP or CO₂ emissions. Toggle 2D/3D and explore by year.</span>
                 </button>
-                <button class="home-grid-btn disabled" data-page="">
-                    <span class="btn-text">Coming Soon</span>
-                    <span class="btn-desc">More visualizations</span>
+                <button class="home-grid-btn" data-page="timeseries">
+                    <span class="btn-text">Country Trends</span>
+                    <span class="btn-desc">Line charts of GDP per capita or CO₂ emissions over time (1850–2022). Compare multiple countries with custom colors.</span>
                 </button>
             </div>
         </div>
@@ -841,6 +956,7 @@
                     <button class="nav-btn active" data-page="bubble">Bubble</button>
                     <button class="nav-btn" data-page="butterfly">Comparison</button>
                     <button class="nav-btn" data-page="maps">Maps</button>
+                    <button class="nav-btn" data-page="timeseries">Trends</button>
                     <a class="nav-download" href="EMISSIONSVSGDP .xlsx" download title="Download data (XLSX)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
                     <button type="button" class="nav-back" data-page="home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
                 </div>
@@ -885,6 +1001,7 @@
                     <button class="nav-btn" data-page="bubble">Bubble</button>
                     <button class="nav-btn active" data-page="butterfly">Comparison</button>
                     <button class="nav-btn" data-page="maps">Maps</button>
+                    <button class="nav-btn" data-page="timeseries">Trends</button>
                     <a class="nav-download" href="EMISSIONSVSGDP .xlsx" download title="Download data (XLSX)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
                     <button type="button" class="nav-back" data-page="home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
                 </div>
@@ -912,7 +1029,8 @@
                 <div class="nav-buttons">
                     <button class="nav-btn" data-page="bubble">Bubble</button>
                     <button class="nav-btn" data-page="butterfly">Comparison</button>
-                    <button class="nav-btn active" data-page="maps">Maps</button>
+                    <button class="nav-btn" data-page="maps">Maps</button>
+                    <button class="nav-btn" data-page="timeseries">Trends</button>
                     <a class="nav-download" href="EMISSIONSVSGDP .xlsx" download title="Download data (XLSX)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
                     <button type="button" class="nav-back" data-page="home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
                 </div>
@@ -933,7 +1051,45 @@
             </div>
         </div>
 
-        <!-- Country selector modal (for bubble chart) -->
+        <!-- Time series line chart page -->
+        <div class="page timeseries-page" id="page-timeseries">
+            <nav class="nav-bar">
+                <span class="nav-title">Country Trends Over Time</span>
+                <div class="nav-buttons">
+                    <button class="nav-btn" data-page="bubble">Bubble</button>
+                    <button class="nav-btn" data-page="butterfly">Comparison</button>
+                    <button class="nav-btn" data-page="maps">Maps</button>
+                    <button class="nav-btn active" data-page="timeseries">Trends</button>
+                    <a class="nav-download" href="EMISSIONSVSGDP .xlsx" download title="Download data (XLSX)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
+                    <button type="button" class="nav-back" data-page="home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
+                </div>
+            </nav>
+            <div class="container">
+                <div class="timeseries-controls">
+                    <div class="control-group">
+                        <label>Chart:</label>
+                        <div class="timeseries-chart-toggle-wrap">
+                            <button type="button" class="timeseries-toggle-btn active" data-metric="gdp">GDP per Capita</button>
+                            <button type="button" class="timeseries-toggle-btn" data-metric="emissions">CO₂ Emissions</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Countries</label>
+                        <button type="button" class="country-selector-trigger" id="timeseriesCountrySelectorTrigger">
+                            <span class="country-selector-label" id="timeseriesCountrySelectorLabel">All Countries</span>
+                            <span class="country-selector-badge" id="timeseriesCountrySelectorBadge"></span>
+                            <svg class="country-selector-arrow" viewBox="0 0 12 12"><path fill="currentColor" d="M6 8L1 3h10z"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="timeseries-chart-wrap" id="timeseriesChart"></div>
+                <div class="timeseries-description" id="timeseriesDescription">
+                    <strong>About this chart:</strong> This time series shows how GDP per capita or CO₂ emissions per capita have evolved from 1850 to 2022. Select countries to highlight them with distinct colors; unselected countries appear in faint gray. GDP is in international-$ at 2011 prices. Data: Global Carbon Budget (2025); Maddison Project Database 2023.
+                </div>
+            </div>
+        </div>
+
+        <!-- Country selector modal (shared by bubble chart and timeseries) -->
         <div class="country-modal-overlay" id="countryModalOverlay">
             <div class="country-modal" id="countryModal">
                 <div class="country-modal-header">
@@ -947,9 +1103,19 @@
                     <div class="country-modal-section-label">Select continent</div>
                     <div class="continent-chips" id="continentChips"></div>
                 </div>
-                <div class="country-modal-section-label" style="padding:0 1.25rem 0.25rem">Countries</div>
-                <div class="country-modal-list" id="countryModalList"></div>
+                <div class="country-modal-main-content">
+                    <div class="country-modal-countries-col">
+                        <div class="country-modal-section-label" style="padding:0 1.25rem 0.25rem">Countries</div>
+                        <div class="country-modal-list" id="countryModalList"></div>
+                    </div>
+                    <div class="country-modal-continent-medians" id="countryModalContinentMedians">
+                        <div class="country-modal-section-label" style="margin-bottom:0.5rem">Continent medians</div>
+                        <div id="continentMediansList"></div>
+                    </div>
+                </div>
                 <div class="country-modal-actions">
+                    <button type="button" class="country-modal-select-all" id="countryModalSelectAll">Select All</button>
+                    <button type="button" class="country-modal-deselect-all" id="countryModalDeselectAll">Deselect All</button>
                     <button type="button" class="country-modal-clear" id="countryModalClear">Clear</button>
                     <button type="button" class="country-modal-done" id="countryModalDone">Done</button>
                 </div>
@@ -1023,6 +1189,7 @@
                 if (page === 'bubble') setTimeout(() => initBubbleChart(), 50);
                 if (page === 'butterfly') setTimeout(() => initPieCharts(), 50);
                 if (page === 'maps') setTimeout(() => initMapsChart(), 50);
+                if (page === 'timeseries') setTimeout(() => initTimeseriesChart(), 50);
             }
             document.querySelectorAll('[data-page]').forEach(el => {
                 el.addEventListener('click', (e) => {
@@ -1056,24 +1223,45 @@
             });
 
             let selectedCountries = new Set();
+            let timeseriesSelectedCountries = new Set();
+            let timeseriesSelectedContinents = new Set();
 
             function initCountrySelector() {
-                const trigger = document.getElementById('countrySelectorTrigger');
-                const label = document.getElementById('countrySelectorLabel');
-                const badge = document.getElementById('countrySelectorBadge');
+                const bubbleTrigger = document.getElementById('countrySelectorTrigger');
+                const timeseriesTrigger = document.getElementById('timeseriesCountrySelectorTrigger');
                 const overlay = document.getElementById('countryModalOverlay');
                 const modal = document.getElementById('countryModal');
                 const list = document.getElementById('countryModalList');
                 const searchInput = document.getElementById('countryModalSearch');
                 const chipsContainer = document.getElementById('continentChips');
+                const selectAllBtn = document.getElementById('countryModalSelectAll');
+                const deselectAllBtn = document.getElementById('countryModalDeselectAll');
                 const clearBtn = document.getElementById('countryModalClear');
                 const doneBtn = document.getElementById('countryModalDone');
                 const closeBtn = document.getElementById('countryModalClose');
-                if (!trigger || !overlay || !list) return;
+                const continentMediansEl = document.getElementById('countryModalContinentMedians');
+                const continentMediansList = document.getElementById('continentMediansList');
+                if (!overlay || !list) return;
+
+                function isTimeseriesContext() {
+                    return document.getElementById('page-timeseries')?.classList.contains('active');
+                }
+                function getActiveState() {
+                    return isTimeseriesContext() ? timeseriesSelectedCountries : selectedCountries;
+                }
+                function getLabelEl() {
+                    return isTimeseriesContext() ? document.getElementById('timeseriesCountrySelectorLabel') : document.getElementById('countrySelectorLabel');
+                }
+                function getBadgeEl() {
+                    return isTimeseriesContext() ? document.getElementById('timeseriesCountrySelectorBadge') : document.getElementById('countrySelectorBadge');
+                }
 
                 function updateUI() {
-                    const n = selectedCountries.size;
-                    if (label) label.textContent = n === 0 ? 'All Countries' : (n === 1 ? [...selectedCountries][0] : n + ' countries selected');
+                    const state = getActiveState();
+                    const label = getLabelEl();
+                    const badge = getBadgeEl();
+                    const n = state.size;
+                    if (label) label.textContent = n === 0 ? 'All Countries' : (n === 1 ? [...state][0] : n + ' countries selected');
                     if (badge) {
                         badge.textContent = n > 0 ? n : '';
                         badge.style.display = n > 0 ? 'inline-flex' : 'none';
@@ -1081,18 +1269,51 @@
                     chipsContainer?.querySelectorAll('.continent-chip').forEach(chip => {
                         const cont = chip.dataset.continent;
                         const countriesInCont = continentToCountries[cont] || [];
-                        chip.classList.toggle('selected', countriesInCont.length > 0 && countriesInCont.every(c => selectedCountries.has(c)));
+                        chip.classList.toggle('selected', countriesInCont.length > 0 && countriesInCont.every(c => state.has(c)));
                     });
                     list?.querySelectorAll('.country-item-row').forEach(row => {
                         const cb = row.querySelector('input');
-                        if (cb) cb.checked = selectedCountries.has(cb.value);
+                        if (cb) cb.checked = state.has(cb.value);
                     });
                     if (window._refreshBubbleChart) window._refreshBubbleChart();
+                    if (window._refreshTimeseriesChart) window._refreshTimeseriesChart();
                 }
 
                 function openModal() {
                     overlay.classList.add('open');
                     document.body.style.overflow = 'hidden';
+                    const state = getActiveState();
+                    const isTs = isTimeseriesContext();
+                    list.querySelectorAll('.country-item-row').forEach(row => {
+                        const cb = row.querySelector('input');
+                        if (cb) cb.checked = state.has(cb.value);
+                    });
+                    chipsContainer?.querySelectorAll('.continent-chip').forEach(chip => {
+                        const cont = chip.dataset.continent;
+                        const countriesInCont = continentToCountries[cont] || [];
+                        chip.classList.toggle('selected', countriesInCont.length > 0 && countriesInCont.every(c => state.has(c)));
+                    });
+                    if (selectAllBtn) selectAllBtn.style.display = isTs ? '' : 'none';
+                    if (deselectAllBtn) deselectAllBtn.style.display = isTs ? '' : 'none';
+                    if (continentMediansEl) {
+                        continentMediansEl.classList.toggle('visible', isTs);
+                        if (isTs) {
+                            modal.classList.add('wider');
+                            const allCountriesList = [...new Set(data.map(d => d.country).filter(c => c && c !== 'World'))];
+                            continentMediansList.innerHTML = CONTINENT_ORDER.filter(c => continentToCountries[c]).map(cont =>
+                                '<label class="continent-median-row"><input type="checkbox" value="' + cont + '"' + (timeseriesSelectedContinents.has(cont) ? ' checked' : '') + '><span>' + cont + '</span></label>'
+                            ).join('');
+                            continentMediansList.querySelectorAll('input').forEach(cb => {
+                                cb.addEventListener('change', function() {
+                                    if (this.checked) timeseriesSelectedContinents.add(this.value);
+                                    else timeseriesSelectedContinents.delete(this.value);
+                                    if (window._refreshTimeseriesChart) window._refreshTimeseriesChart();
+                                });
+                            });
+                        } else {
+                            modal.classList.remove('wider');
+                        }
+                    }
                     setTimeout(() => searchInput?.focus(), 50);
                 }
 
@@ -1107,13 +1328,14 @@
 
                 chipsContainer.querySelectorAll('.continent-chip').forEach(chip => {
                     chip.addEventListener('click', () => {
+                        const state = getActiveState();
                         const cont = chip.dataset.continent;
                         const countriesInCont = continentToCountries[cont] || [];
-                        const allSelected = countriesInCont.every(c => selectedCountries.has(c));
+                        const allSelected = countriesInCont.every(c => state.has(c));
                         if (allSelected) {
-                            countriesInCont.forEach(c => selectedCountries.delete(c));
+                            countriesInCont.forEach(c => state.delete(c));
                         } else {
-                            countriesInCont.forEach(c => selectedCountries.add(c));
+                            countriesInCont.forEach(c => state.add(c));
                         }
                         updateUI();
                     });
@@ -1129,8 +1351,9 @@
 
                 list.querySelectorAll('input').forEach(cb => {
                     cb.addEventListener('change', () => {
-                        if (cb.checked) selectedCountries.add(cb.value);
-                        else selectedCountries.delete(cb.value);
+                        const state = getActiveState();
+                        if (cb.checked) state.add(cb.value);
+                        else state.delete(cb.value);
                         updateUI();
                     });
                 });
@@ -1143,8 +1366,23 @@
                     });
                 });
 
+                const allCountriesList = [...new Set(data.map(d => d.country).filter(c => c && c !== 'World'))];
+                selectAllBtn?.addEventListener('click', () => {
+                    if (!isTimeseriesContext()) return;
+                    allCountriesList.forEach(c => timeseriesSelectedCountries.add(c));
+                    updateUI();
+                });
+                deselectAllBtn?.addEventListener('click', () => {
+                    if (!isTimeseriesContext()) return;
+                    timeseriesSelectedCountries.clear();
+                    updateUI();
+                });
+                if (selectAllBtn) selectAllBtn.style.display = 'none';
+                if (deselectAllBtn) deselectAllBtn.style.display = 'none';
+
                 clearBtn?.addEventListener('click', () => {
-                    selectedCountries.clear();
+                    const state = getActiveState();
+                    state.clear();
                     updateUI();
                 });
 
@@ -1155,11 +1393,20 @@
                     if (e.target === overlay) closeModal();
                 });
 
-                trigger.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    openModal();
-                });
+                if (bubbleTrigger) {
+                    bubbleTrigger.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openModal();
+                    });
+                }
+                if (timeseriesTrigger) {
+                    timeseriesTrigger.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openModal();
+                    });
+                }
 
                 window.addEventListener('keydown', (e) => {
                     if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
@@ -1561,11 +1808,141 @@
                 updateMap();
             }
 
+            // Time series line chart
+            const TIMESERIES_COLORS = ['#22d3ee','#34d399','#fbbf24','#a78bfa','#f472b6','#38bdf8','#4ade80','#facc15','#c084fc','#fb7185','#2dd4bf','#f59e0b','#818cf8','#ec4899','#06b6d4','#10b981','#e879f9','#14b8a6'];
+            let timeseriesChartInitialized = false;
+
+            function initTimeseriesChart() {
+                const chartEl = document.getElementById('timeseriesChart');
+                const toggleBtns = document.querySelectorAll('.timeseries-toggle-btn');
+                if (!chartEl || typeof Plotly === 'undefined') return;
+
+                let currentMetric = 'gdp';
+
+                function getCountryTimeSeries() {
+                    const byCountry = {};
+                    data.filter(d => d.country !== 'World').forEach(d => {
+                        const val = currentMetric === 'gdp' ? d.gdp_per_capita : d.emissions_per_capita;
+                        if (val == null || (currentMetric === 'gdp' && val <= 0) || (currentMetric === 'emissions' && val < 0)) return;
+                        if (!byCountry[d.country]) byCountry[d.country] = [];
+                        byCountry[d.country].push({
+                            year: d.year,
+                            value: val,
+                            gdp: d.gdp_per_capita,
+                            emissions: d.emissions_per_capita,
+                            population: d.population,
+                            continent: d.continent || ''
+                        });
+                    });
+                    Object.keys(byCountry).forEach(c => {
+                        byCountry[c].sort((a, b) => a.year - b.year);
+                    });
+                    return byCountry;
+                }
+
+                function updateChart() {
+                    const byCountry = getCountryTimeSeries();
+                    const countries = Object.keys(byCountry).sort();
+                    const selectedList = [...timeseriesSelectedCountries].filter(c => byCountry[c]);
+                    const unselectedList = countries.filter(c => !timeseriesSelectedCountries.has(c));
+
+                    const traces = [];
+                    selectedList.forEach((country, i) => {
+                        const pts = byCountry[country];
+                        if (!pts.length) return;
+                        const color = TIMESERIES_COLORS[i % TIMESERIES_COLORS.length];
+                        traces.push({
+                            type: 'scatter',
+                            mode: 'lines',
+                            name: country,
+                            x: pts.map(p => p.year),
+                            y: pts.map(p => p.value),
+                            customdata: pts.map(p => [p.gdp, p.emissions, p.population, p.continent]),
+                            hovertemplate: '<b>%{fullData.name}</b><br>Year: %{x}<br>GDP per capita: $%{customdata[0]:,.0f}<br>CO₂ per capita: %{customdata[1]:.2f} tonnes<br>Population: %{customdata[2]:,.0f}<br>Continent: %{customdata[3]}<extra></extra>',
+                            line: { color: color, width: 2.5 },
+                            connectgaps: false
+                        });
+                    });
+                    unselectedList.forEach(country => {
+                        const pts = byCountry[country];
+                        if (!pts.length) return;
+                        traces.push({
+                            type: 'scatter',
+                            mode: 'lines',
+                            name: country,
+                            x: pts.map(p => p.year),
+                            y: pts.map(p => p.value),
+                            customdata: pts.map(p => [p.gdp, p.emissions, p.population, p.continent]),
+                            hovertemplate: '<b>%{fullData.name}</b><br>Year: %{x}<br>GDP per capita: $%{customdata[0]:,.0f}<br>CO₂ per capita: %{customdata[1]:.2f} tonnes<br>Population: %{customdata[2]:,.0f}<br>Continent: %{customdata[3]}<extra></extra>',
+                            line: { color: 'rgba(150,150,150,0.35)', width: 1.2 },
+                            connectgaps: false
+                        });
+                    });
+
+                    const yTitle = currentMetric === 'gdp' ? 'GDP per capita ($)' : 'CO₂ emissions per capita (tonnes)';
+                    const layout = {
+                        paper_bgcolor: 'rgba(0,0,0,0)',
+                        plot_bgcolor: 'rgba(0,0,0,0)',
+                        margin: { t: 50, r: 40, b: 60, l: 70 },
+                        font: { color: '#a3a3a3', size: 12 },
+                        xaxis: {
+                            title: { text: 'Year' },
+                            gridcolor: 'rgba(255,255,255,0.06)',
+                            zeroline: false,
+                            range: [1848, 2024]
+                        },
+                        yaxis: {
+                            title: { text: yTitle },
+                            type: currentMetric === 'gdp' ? 'log' : 'linear',
+                            gridcolor: 'rgba(255,255,255,0.06)',
+                            zeroline: false
+                        },
+                        showlegend: true,
+                        legend: { x: 1.02, y: 1, xanchor: 'left', bgcolor: 'rgba(0,0,0,0)', font: { color: '#e5e5e5' } },
+                        hoverlabel: { bgcolor: '#1a1a1a', bordercolor: '#2a2a2a', font: { color: '#e5e5e5' }, namelength: -1 },
+                        height: Math.max(450, window.innerHeight - 280)
+                    };
+
+                    if (traces.length === 0) {
+                        chartEl.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#737373;font-size:1rem;">No data available</div>';
+                    } else {
+                        Plotly.react('timeseriesChart', traces, layout, { responsive: true, displayModeBar: false });
+                    }
+                }
+
+                window._refreshTimeseriesChart = updateChart;
+
+                if (!timeseriesChartInitialized) {
+                    timeseriesChartInitialized = true;
+                    const desc = document.getElementById('timeseriesDescription');
+                    if (desc) desc.innerHTML = '<strong>About this chart:</strong> GDP per capita over time (1850–2022). Select countries to highlight them. Unselected countries appear in faint gray. GDP in international-$ at 2011 prices. Data: Maddison Project Database 2023.';
+                    toggleBtns.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            toggleBtns.forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            currentMetric = btn.dataset.metric;
+                            const desc = document.getElementById('timeseriesDescription');
+                            if (desc) {
+                                desc.innerHTML = currentMetric === 'gdp'
+                                    ? '<strong>About this chart:</strong> GDP per capita over time (1850–2022). Select countries to highlight them. Unselected countries appear in faint gray. GDP in international-$ at 2011 prices. Data: Maddison Project Database 2023.'
+                                    : '<strong>About this chart:</strong> CO₂ emissions per capita over time (1850–2022). Select countries to highlight them. Unselected countries appear in faint gray. Data: Global Carbon Budget (2025).';
+                            }
+                            updateChart();
+                        });
+                    });
+                }
+
+                if (window.updateCountryDropdownUI) window.updateCountryDropdownUI();
+                updateChart();
+                window.addEventListener('resize', () => { if (chartEl.querySelector('.plotly')) Plotly.Plots.resize('timeseriesChart'); });
+            }
+
             if (typeof Plotly !== 'undefined') {
                 const check = () => {
                     if (document.getElementById('page-bubble').classList.contains('active')) initBubbleChart();
                     if (document.getElementById('page-butterfly').classList.contains('active')) initPieCharts();
                     if (document.getElementById('page-maps').classList.contains('active')) initMapsChart();
+                    if (document.getElementById('page-timeseries').classList.contains('active')) initTimeseriesChart();
                 };
                 setTimeout(check, 100);
                 window.addEventListener('load', check);
