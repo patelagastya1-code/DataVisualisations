@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CO₂ Emissions vs GDP per Capita, 1850</title>
+    <title>GDP per Capita vs CO₂ Emissions per Capita — Data Visualisation (1850–2022)</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,11 +86,13 @@
         }
         .nav-title {
             font-family: 'Sora', sans-serif;
-            font-size: 1rem;
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
             font-weight: 600;
             color: var(--white);
             letter-spacing: 0.03em;
             text-align: right;
+            max-width: min(65vw, 520px);
+            line-height: 1.35;
         }
         .nav-buttons {
             display: flex;
@@ -292,16 +294,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1.5rem;
             font-family: 'Exo 2', sans-serif;
-            font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+            font-size: clamp(0.72rem, 1.2vw, 0.88rem);
             font-weight: 400;
             color: rgba(255,255,255,0.95);
-            line-height: 1.6;
+            line-height: 1.5;
             opacity: 0;
             z-index: 3;
             transition: opacity 0.35s ease;
             text-align: center;
+            overflow-y: auto;
         }
         .home-grid-btn:hover::after {
             background: rgba(17,17,17,0.95);
@@ -779,24 +782,35 @@
         }
         .pie-chart-and-legend {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 1.5rem;
             flex: 1;
+            padding: 1rem 0;
+            min-width: 0;
+        }
+        .pie-chart-legend-chart-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            max-width: 100%;
         }
         .pie-legend-wrap {
             display: flex;
-            flex-direction: column;
             flex-wrap: wrap;
-            gap: 0.4rem;
-            padding: 1rem;
-            max-height: 420px;
-            overflow-y: auto;
-            flex-shrink: 0;
+            justify-content: center;
+            gap: 0.5rem 1rem;
+            padding: 0.75rem 1rem;
+            max-width: 100%;
+            overflow-x: hidden;
         }
         .pie-chart-single-wrap {
-            width: 420px;
-            height: 420px;
+            width: min(420px, calc(100vw - 4rem));
+            height: min(420px, calc(100vw - 4rem));
+            min-width: 280px;
+            min-height: 280px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
@@ -805,10 +819,15 @@
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
             animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+            contain: layout;
         }
         .pie-chart-single-wrap .plotly,
         .pie-chart-single-wrap .js-plotly-plot,
-        .pie-chart-single-wrap > div { width: 420px !important; height: 420px !important; }
+        .pie-chart-single-wrap > div {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100%;
+        }
         .pie-legend-item {
             display: inline-flex;
             align-items: center;
@@ -1116,7 +1135,7 @@
         <!-- Homepage -->
         <div class="page active" id="page-home">
             <div class="home-section" id="homeHero">
-                <h1 class="home-title">The <span class="title-gradient">Visualisation</span> of GDP vs CO₂ Emissions</h1>
+                <h1 class="home-title">The <span class="title-gradient">Visualisation</span> of GDP per Capita vs CO₂ Emissions per Capita</h1>
                 <div class="home-arrow-wrap">
                     <button class="home-arrow-btn" id="homeArrowBtn" aria-label="View visualizations">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1128,19 +1147,19 @@
             <div class="home-grid-section" id="homeGrid">
                 <button class="home-grid-btn" data-page="bubble">
                     <span class="btn-text">Bubble Chart</span>
-                    <span class="btn-desc">Scatter plot of GDP vs CO₂ emissions. Bubble size represents population. Explore by year and country.</span>
+                    <span class="btn-desc">Scatter plot revealing the relationship between GDP per capita and CO₂ emissions per capita (1850–2022). Bubble size = population. Use the year slider to explore changes over time; select countries to filter. Shows how economic development correlates with carbon emissions across the globe.</span>
                 </button>
                 <button class="home-grid-btn" data-page="butterfly">
                     <span class="btn-text">Top & Bottom 12 Comparison</span>
-                    <span class="btn-desc">Double-ring pie charts comparing top 20 and bottom 20 countries by GDP and CO₂ emissions. Explore by year.</span>
+                    <span class="btn-desc">Double-ring donut charts comparing the top 12 and bottom 12 countries by GDP per capita (inner ring) and CO₂ emissions per capita (outer ring). Toggle between richest/poorest and highest/lowest emitters. Use the year slider to see how global rankings change from 1850–2022. Click legend items to highlight countries.</span>
                 </button>
                 <button class="home-grid-btn" data-page="maps">
                     <span class="btn-text">Choropleth Maps</span>
-                    <span class="btn-desc">World maps colored by GDP or CO₂ emissions. Toggle 2D/3D and explore by year.</span>
+                    <span class="btn-desc">World maps colored by GDP per capita or CO₂ emissions per capita. Toggle between 2D and 3D globe views. Use the year slider to explore spatial patterns from 1850–2022. Reveals global inequality in wealth and emissions—see which regions lead or lag over time.</span>
                 </button>
                 <button class="home-grid-btn" data-page="timeseries">
                     <span class="btn-text">Country Trends</span>
-                    <span class="btn-desc">Line charts of GDP per capita or CO₂ emissions over time (1850–2022). Compare multiple countries with custom colors.</span>
+                    <span class="btn-desc">Line charts showing GDP per capita or CO₂ emissions per capita over time (1850–2022). Select countries to compare and highlight their development trajectories. Switch between GDP and emissions to study growth patterns, industrialization, and decoupling trends. Use the country selector to focus on specific nations or continents.</span>
                 </button>
             </div>
         </div>
@@ -1148,7 +1167,7 @@
         <!-- Bubble chart page -->
         <div class="page" id="page-bubble">
             <nav class="nav-bar">
-                <span class="nav-title">CO₂ Emissions per Capita vs. GDP per Capita Bubble Chart</span>
+                <span class="nav-title">Scatter Plot: GDP per Capita vs CO₂ Emissions per Capita (1850–2022). Bubble size = population.</span>
                 <div class="nav-buttons">
                     <button class="nav-btn active" data-page="bubble">Bubble</button>
                     <button class="nav-btn" data-page="butterfly">Comparison</button>
@@ -1180,7 +1199,7 @@
                     <div class="chart-container" id="bubbleChart"></div>
                     <div class="bubble-chart-prompt" id="bubbleChartPrompt">Adjust the year slider to generate the graph</div>
                 </div>
-                <p class="bubble-disclaimer">GDP in international-$ at 2011 prices. Bubble size = population.</p>
+                <p class="bubble-disclaimer">GDP per capita in international-$ at 2011 prices. Bubble size = population.</p>
                 <p class="bubble-attribution">Global Carbon Budget (2025); Population based on various sources (2024); Bolt and van Zanden – Maddison Project Database 2023</p>
                 <div class="chart-legend">
                     <span class="legend-item"><span class="legend-dot" style="background:rgba(251,191,36,0.9)"></span> Africa</span>
@@ -1196,7 +1215,7 @@
         <!-- Comparison pie charts page -->
         <div class="page pie-page" id="page-butterfly">
             <nav class="nav-bar">
-                <span class="nav-title">Top & Bottom 12 Comparison</span>
+                <span class="nav-title">Top 12 & Bottom 12 Countries by GDP per Capita and CO₂ Emissions per Capita — Double-Ring Donut Charts</span>
                 <div class="nav-buttons">
                     <button class="nav-btn" data-page="bubble">Bubble</button>
                     <button class="nav-btn active" data-page="butterfly">Comparison</button>
@@ -1219,8 +1238,10 @@
                     <button class="btn btn-primary" id="piePlayBtn"><span id="piePlayIcon">▶</span> <span id="piePlayLabel">Play</span></button>
                 </div>
                 <div class="pie-chart-and-legend">
-                    <div class="pie-legend-wrap" id="pieLegendWrap"></div>
-                    <div class="pie-chart-single-wrap" id="pieChartContainer"></div>
+                    <div class="pie-chart-legend-chart-group">
+                        <div class="pie-legend-wrap" id="pieLegendWrap"></div>
+                        <div class="pie-chart-single-wrap" id="pieChartContainer"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1228,7 +1249,7 @@
         <!-- Choropleth maps page -->
         <div class="page" id="page-maps">
             <nav class="nav-bar">
-                <span class="nav-title">Choropleth Maps</span>
+                <span class="nav-title">World Choropleth Maps: GDP per Capita and CO₂ Emissions per Capita by Country (1850–2022)</span>
                 <div class="nav-buttons">
                     <button class="nav-btn" data-page="bubble">Bubble</button>
                     <button class="nav-btn" data-page="butterfly">Comparison</button>
@@ -1257,7 +1278,7 @@
         <!-- Time series line chart page -->
         <div class="page timeseries-page" id="page-timeseries">
             <nav class="nav-bar">
-                <span class="nav-title">Country Trends Over Time</span>
+                <span class="nav-title">GDP per Capita and CO₂ Emissions per Capita Trends Over Time (1850–2022)</span>
                 <div class="nav-buttons">
                     <button class="nav-btn" data-page="bubble">Bubble</button>
                     <button class="nav-btn" data-page="butterfly">Comparison</button>
@@ -1287,7 +1308,7 @@
                 </div>
                 <div class="timeseries-chart-wrap" id="timeseriesChart"></div>
                 <div class="timeseries-description" id="timeseriesDescription">
-                    <strong>About this chart:</strong> This time series shows how GDP per capita or CO₂ emissions per capita have evolved from 1850 to 2022. Select countries to highlight them with distinct colors; unselected countries appear in faint gray. GDP is in international-$ at 2011 prices. Data: Global Carbon Budget (2025); Maddison Project Database 2023.
+                    <strong>About this chart:</strong> Line chart showing GDP per capita or CO₂ emissions per capita over time (1850–2022). Toggle between metrics to compare economic development vs carbon footprint. Select countries via the selector to highlight them with distinct colors; unselected countries appear in faint gray. GDP in international-$ at 2011 prices. Data: Global Carbon Budget (2025); Maddison Project Database 2023.
                 </div>
             </div>
         </div>
@@ -1854,17 +1875,15 @@
                     return { outerLabels, outerValues, outerColors, outerHoverTexts, innerLabels, innerValues, innerColors, innerHoverTexts };
                 }
 
-                const PIE_CHART_SIZE = 420;
                 function getBaseLayout(chartType) {
-                    const titleText = chartType === 'top' ? 'Top 12 by CO₂ (outer) and GDP (inner)' : 'Bottom 12 by CO₂ (outer) and GDP (inner)';
+                    const titleText = chartType === 'top' ? 'Top 12 by CO₂ per capita (outer) and GDP per capita (inner)' : 'Bottom 12 by CO₂ per capita (outer) and GDP per capita (inner)';
                     return {
                         title: { text: titleText, font: { size: 14 }, x: 0.5, xanchor: 'center' },
                         paper_bgcolor: 'rgba(17,17,17,0.4)',
                         plot_bgcolor: 'rgba(17,17,17,0.4)',
                         font: { family: 'DM Sans', color: '#a3a3a3', size: 11 },
                         margin: { t: 40, r: 20, b: 20, l: 20 },
-                        width: PIE_CHART_SIZE,
-                        height: PIE_CHART_SIZE,
+                        autosize: true,
                         hoverlabel: { bgcolor: '#1a1a1a', bordercolor: '#2a2a2a', font: { color: '#e5e5e5' }, namelength: -1 },
                         showlegend: false,
                         legend: { orientation: 'h', x: 0.5, xanchor: 'center', y: -0.12, font: { color: '#a3a3a3', size: 10 } }
@@ -1960,7 +1979,13 @@
                         updatePies();
                     });
                 });
-                window.addEventListener('resize', () => { if (chartEl && chartEl.querySelector('.plotly')) Plotly.Plots.resize('pieChartContainer'); });
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        if (chartEl && chartEl.querySelector('.plotly')) Plotly.Plots.resize('pieChartContainer');
+                    }, 150);
+                });
 
                 slider.addEventListener('input', () => { if (playing) { playing = false; if (playInterval) clearInterval(playInterval); playBtn?.classList.remove('playing'); if (playIcon) playIcon.textContent = '▶'; if (playLabel) playLabel.textContent = 'Play'; } highlightedCountry = null; updatePies(); });
                 if (playBtn) playBtn.addEventListener('click', () => {
@@ -2263,7 +2288,7 @@
                 if (!timeseriesChartInitialized) {
                     timeseriesChartInitialized = true;
                     const desc = document.getElementById('timeseriesDescription');
-                    if (desc) desc.innerHTML = '<strong>About this chart:</strong> GDP per capita over time (1850–2022). Select countries to highlight them. Unselected countries appear in faint gray. GDP in international-$ at 2011 prices. Data: Maddison Project Database 2023.';
+                    if (desc) desc.innerHTML = '<strong>About this chart:</strong> Line chart of GDP per capita over time (1850–2022). Select countries to highlight their trajectories; unselected appear in faint gray. GDP in international-$ at 2011 prices. Data: Maddison Project Database 2023.';
                     toggleBtns.forEach(btn => {
                         btn.addEventListener('click', () => {
                             toggleBtns.forEach(b => b.classList.remove('active'));
@@ -2272,8 +2297,8 @@
                             const desc = document.getElementById('timeseriesDescription');
                             if (desc) {
                                 desc.innerHTML = currentMetric === 'gdp'
-                                    ? '<strong>About this chart:</strong> GDP per capita over time (1850–2022). Select countries to highlight them. Unselected countries appear in faint gray. GDP in international-$ at 2011 prices. Data: Maddison Project Database 2023.'
-                                    : '<strong>About this chart:</strong> CO₂ emissions per capita over time (1850–2022). Select countries to highlight them. Unselected countries appear in faint gray. Data: Global Carbon Budget (2025).';
+                                    ? '<strong>About this chart:</strong> Line chart of GDP per capita over time (1850–2022). Select countries to highlight their trajectories; unselected appear in faint gray. GDP in international-$ at 2011 prices. Data: Maddison Project Database 2023.'
+                                    : '<strong>About this chart:</strong> Line chart of CO₂ emissions per capita over time (1850–2022). Select countries to highlight their trajectories; unselected appear in faint gray. Data: Global Carbon Budget (2025).';
                             }
                             updateChart();
                         });
