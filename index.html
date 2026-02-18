@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GDP per Capita vs CO₂ Emissions per Capita — Data Visualisation (1850–2022)</title>
+    <title>CO₂ Emissions vs GDP per Capita, 1850</title>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,13 +86,11 @@
         }
         .nav-title {
             font-family: 'Sora', sans-serif;
-            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            font-size: 1rem;
             font-weight: 600;
             color: var(--white);
             letter-spacing: 0.03em;
             text-align: right;
-            max-width: min(65vw, 520px);
-            line-height: 1.35;
         }
         .nav-buttons {
             display: flex;
@@ -294,17 +292,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1.5rem;
+            padding: 2rem;
             font-family: 'Exo 2', sans-serif;
-            font-size: clamp(0.72rem, 1.2vw, 0.88rem);
+            font-size: clamp(0.8rem, 1.3vw, 0.95rem);
             font-weight: 400;
             color: rgba(255,255,255,0.95);
-            line-height: 1.5;
+            line-height: 1.6;
             opacity: 0;
             z-index: 3;
             transition: opacity 0.35s ease;
             text-align: center;
-            overflow-y: auto;
         }
         .home-grid-btn:hover::after {
             background: rgba(17,17,17,0.95);
@@ -622,6 +619,7 @@
         }
         input[type="range"] {
             width: 180px;
+            max-width: 100%;
             height: 6px;
             -webkit-appearance: none;
             appearance: none;
@@ -677,7 +675,7 @@
             0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
             50% { box-shadow: 0 0 0 8px rgba(255,255,255,0); }
         }
-        .chart-container-wrap { position: relative; width: 100%; min-height: 580px; }
+        .chart-container-wrap { position: relative; width: 100%; height: min(70vh, 580px); min-height: 400px; overflow: hidden; }
         .bubble-chart-prompt {
             position: absolute;
             inset: 0;
@@ -695,12 +693,13 @@
         .bubble-chart-prompt.hidden { opacity: 0; pointer-events: none; visibility: hidden; }
         .chart-container {
             width: 100%;
-            height: 580px;
+            height: 100%;
             background: rgba(17,17,17,0.25);
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
             animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
             transition: box-shadow 0.3s ease;
+            overflow: hidden;
         }
         .chart-container:hover { box-shadow: 0 0 40px rgba(255,255,255,0.03); }
         .chart-legend {
@@ -727,107 +726,148 @@
         .legend-item:hover .legend-dot { transform: scale(1.2); }
 
         /* Comparison pie charts page */
-        .pie-page .container { max-width: 100%; margin: 0 auto; padding: 0 2rem; }
+        .pie-page { padding: 0.75rem 1.25rem 1rem; overflow: hidden; }
+        .pie-page .container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0 1rem;
+            box-sizing: border-box;
+            height: calc(100vh - 100px);
+            max-height: calc(100vh - 100px);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .pie-page-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--white);
+            text-align: center;
+            margin: 0 0 0.25rem 0;
+            flex-shrink: 0;
+            letter-spacing: 0.02em;
+        }
         .pie-controls {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-            padding: 1rem 1.5rem;
+            gap: 1rem;
+            margin-bottom: 0;
+            padding: 0.5rem 1rem;
             background: rgba(17,17,17,0.8);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
+            border-radius: 10px;
             animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+            flex-shrink: 0;
         }
-        .pie-controls label { font-family: 'DM Sans', sans-serif; color: var(--text-secondary); }
+        .pie-controls label { font-family: 'DM Sans', sans-serif; color: var(--text-secondary); font-size: 0.9rem; }
         .pie-controls .year-display { font-family: 'Sora', sans-serif; font-weight: 600; }
         .maps-controls .year-display { font-family: 'Sora', sans-serif; font-weight: 600; }
-        .pie-page .container {
-            max-width: 100%;
-            min-height: calc(100vh - 120px);
-            height: auto;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-        .pie-chart-toggle-wrap {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .pie-toggle-btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(26,26,26,0.9);
-            color: var(--text-primary);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 8px;
-        }
-        .pie-toggle-btn.active {
-            background: var(--white);
-            color: var(--bg-primary);
-            border-color: var(--white);
-        }
-        .pie-toggle-btn:hover:not(.active) {
-            background: rgba(42,42,42,0.9);
-            color: var(--white);
-            border-color: rgba(255,255,255,0.3);
-            transform: translateY(-2px);
-        }
         .pie-chart-and-legend {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-            flex: 1;
-            padding: 1rem 0;
-            min-width: 0;
-        }
-        .pie-chart-legend-chart-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: grid;
+            grid-template-columns: minmax(160px, 220px) 1fr;
             gap: 1rem;
-            max-width: 100%;
+            align-items: stretch;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+        .pie-legend-section {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+            background: rgba(17,17,17,0.6);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 0.5rem;
+        }
+        .pie-legend-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin: 0 0 0.5rem 0;
+            flex-shrink: 0;
         }
         .pie-legend-wrap {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem 1rem;
-            padding: 0.75rem 1rem;
-            max-width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-auto-rows: min-content;
+            gap: 0.25rem;
+            padding: 0;
+            align-content: start;
+            overflow-y: auto;
             overflow-x: hidden;
+            flex: 1;
+            min-height: 0;
         }
-        .pie-chart-single-wrap {
-            width: min(420px, calc(100vw - 4rem));
-            height: min(420px, calc(100vw - 4rem));
-            min-width: 280px;
-            min-height: 280px;
+        .pie-charts-container {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            align-items: stretch;
+            justify-content: center;
+            min-width: 0;
+            flex: 1;
+            min-height: 0;
+        }
+        .pie-chart-card {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            min-height: 0;
+        }
+        .pie-chart-title {
+            font-family: 'Sora', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--white);
+            margin: 0;
             flex-shrink: 0;
+        }
+        .pie-chart-subtitle {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin: 0;
+            flex-shrink: 0;
+        }
+        .pie-chart-wrap {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            aspect-ratio: 1;
+            max-height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             background: rgba(17,17,17,0.6);
             border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 12px;
+            border-radius: 10px;
             animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
-            contain: layout;
+            overflow: hidden;
         }
-        .pie-chart-single-wrap .plotly,
-        .pie-chart-single-wrap .js-plotly-plot,
-        .pie-chart-single-wrap > div {
+        .pie-chart-wrap .plotly,
+        .pie-chart-wrap .js-plotly-plot,
+        .pie-chart-wrap > div {
             width: 100% !important;
             height: 100% !important;
-            max-width: 100%;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
+        .pie-chart-wrap .plotly .plot-container,
+        .pie-chart-wrap .js-plotly-plot .plot-container { margin: auto; }
         .pie-legend-item {
             display: inline-flex;
             align-items: center;
@@ -893,6 +933,7 @@
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
             animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+            overflow: hidden;
         }
         .maps-chart-wrap .plotly,
         .maps-chart-wrap .js-plotly-plot,
@@ -943,18 +984,22 @@
         }
         .timeseries-chart-wrap {
             width: 100%;
-            height: 580px;
+            min-height: 400px;
+            max-height: min(70vh, 580px);
+            height: min(70vh, 580px);
             position: relative;
             background: rgba(17,17,17,0.25);
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
             animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+            overflow: hidden;
         }
         .timeseries-chart-wrap .plotly,
         .timeseries-chart-wrap .js-plotly-plot,
         .timeseries-chart-wrap > div {
             width: 100% !important;
             height: 100% !important;
+            max-height: 100% !important;
         }
         .timeseries-description {
             margin-top: 1rem;
@@ -968,7 +1013,7 @@
         .timeseries-description strong { color: var(--text-primary); }
 
         .chart-container .hoverlayer .hovertext,
-        .pie-chart-single-wrap .hoverlayer .hovertext,
+        .pie-chart-wrap .hoverlayer .hovertext,
         .maps-chart-wrap .hoverlayer .hovertext,
         .timeseries-chart-wrap .hoverlayer .hovertext {
             font-family: 'DM Sans', sans-serif !important;
@@ -977,6 +1022,56 @@
             max-width: 340px !important;
             border-radius: 8px !important;
         }
+
+        /* Responsive: adapt to all screen sizes and zoom levels */
+        @media (max-width: 1200px) {
+            .page { padding: 1.25rem; }
+            .nav-bar { padding: 0.75rem 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+            .nav-title { font-size: 0.9rem; }
+            .home-grid-section { grid-template-columns: 1fr; grid-template-rows: auto; gap: 0.75rem; padding: 1rem; }
+            .pie-page .container { height: calc(100vh - 110px); max-height: calc(100vh - 110px); }
+            .pie-chart-and-legend { grid-template-columns: 1fr; grid-template-rows: minmax(0, auto) 1fr; }
+            .pie-legend-section { max-height: 140px; }
+            .pie-charts-container { flex-direction: column; }
+            .pie-chart-wrap { max-height: min(380px, 42vh); }
+            .chart-container-wrap { height: min(55vh, 520px); min-height: 350px; }
+            .timeseries-chart-wrap { height: min(55vh, 520px); min-height: 350px; }
+        }
+        @media (max-width: 768px) {
+            .page { padding: 1rem; }
+            .nav-bar { padding: 0.6rem 1rem; flex-direction: column; align-items: stretch; }
+            .nav-title { text-align: center; }
+            .nav-buttons { justify-content: center; }
+            .home-section { padding: 1.5rem; }
+            .home-title { font-size: clamp(1.8rem, 6vw, 3rem); }
+            .bubble-controls, .pie-controls, .maps-controls, .timeseries-controls { flex-direction: column; align-items: stretch; gap: 1rem; }
+            .control-group:not(:first-child)::before { display: none; }
+            .country-selector-trigger { min-width: 100%; }
+            input[type="range"] { max-width: 100% !important; width: 100% !important; }
+            .pie-page .container { height: calc(100vh - 120px); max-height: calc(100vh - 120px); }
+            .pie-chart-wrap { max-height: min(280px, 35vh); }
+            .chart-container-wrap { height: min(50vh, 450px); min-height: 300px; }
+            .timeseries-chart-wrap { height: min(50vh, 450px); min-height: 300px; }
+            .maps-chart-wrap { min-height: 300px; }
+            .country-modal { max-width: 95vw !important; max-height: 90vh !important; }
+        }
+        @media (max-width: 480px) {
+            .page { padding: 0.75rem; }
+            .pie-page { padding: 0.5rem 0.75rem; }
+            .pie-page .container { height: calc(100vh - 130px); max-height: calc(100vh - 130px); }
+            .pie-page-title { font-size: 0.95rem; }
+            .pie-chart-title { font-size: 0.85rem; }
+            .pie-chart-subtitle { font-size: 0.65rem; }
+            .nav-btn { padding: 0.4rem 0.7rem; font-size: 0.8rem; }
+            .home-grid-btn .btn-text { font-size: 1rem; }
+            .home-grid-btn .btn-desc { font-size: 0.75rem; }
+            .chart-container-wrap { height: min(45vh, 400px); min-height: 280px; }
+            .timeseries-chart-wrap { height: min(45vh, 400px); min-height: 280px; }
+        }
+        /* Prevent overflow on zoom - use overflow containment */
+        .page { overflow-x: hidden; }
+        .container { overflow-x: hidden; max-width: 100%; }
+        .bubble-controls, .pie-controls, .maps-controls, .timeseries-controls { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
         /* AI Chatbot */
         .chatbot-widget {
@@ -1135,7 +1230,7 @@
         <!-- Homepage -->
         <div class="page active" id="page-home">
             <div class="home-section" id="homeHero">
-                <h1 class="home-title">The <span class="title-gradient">Visualisation</span> of GDP per Capita vs CO₂ Emissions per Capita</h1>
+                <h1 class="home-title">The <span class="title-gradient">Visualisation</span> of GDP vs CO₂ Emissions</h1>
                 <div class="home-arrow-wrap">
                     <button class="home-arrow-btn" id="homeArrowBtn" aria-label="View visualizations">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1147,19 +1242,19 @@
             <div class="home-grid-section" id="homeGrid">
                 <button class="home-grid-btn" data-page="bubble">
                     <span class="btn-text">Bubble Chart</span>
-                    <span class="btn-desc">Scatter plot revealing the relationship between GDP per capita and CO₂ emissions per capita (1850–2022). Bubble size = population. Use the year slider to explore changes over time; select countries to filter. Shows how economic development correlates with carbon emissions across the globe.</span>
+                    <span class="btn-desc">Scatter plot of GDP vs CO₂ emissions. Bubble size represents population. Explore by year and country.</span>
                 </button>
                 <button class="home-grid-btn" data-page="butterfly">
                     <span class="btn-text">Top & Bottom 12 Comparison</span>
-                    <span class="btn-desc">Double-ring donut charts comparing the top 12 and bottom 12 countries by GDP per capita (inner ring) and CO₂ emissions per capita (outer ring). Toggle between richest/poorest and highest/lowest emitters. Use the year slider to see how global rankings change from 1850–2022. Click legend items to highlight countries.</span>
+                    <span class="btn-desc">Double-ring pie charts comparing top 20 and bottom 20 countries by GDP and CO₂ emissions. Explore by year.</span>
                 </button>
                 <button class="home-grid-btn" data-page="maps">
                     <span class="btn-text">Choropleth Maps</span>
-                    <span class="btn-desc">World maps colored by GDP per capita or CO₂ emissions per capita. Toggle between 2D and 3D globe views. Use the year slider to explore spatial patterns from 1850–2022. Reveals global inequality in wealth and emissions—see which regions lead or lag over time.</span>
+                    <span class="btn-desc">World maps colored by GDP or CO₂ emissions. Toggle 2D/3D and explore by year.</span>
                 </button>
                 <button class="home-grid-btn" data-page="timeseries">
                     <span class="btn-text">Country Trends</span>
-                    <span class="btn-desc">Line charts showing GDP per capita or CO₂ emissions per capita over time (1850–2022). Select countries to compare and highlight their development trajectories. Switch between GDP and emissions to study growth patterns, industrialization, and decoupling trends. Use the country selector to focus on specific nations or continents.</span>
+                    <span class="btn-desc">Line charts of GDP per capita or CO₂ emissions over time (1850–2022). Compare multiple countries with custom colors.</span>
                 </button>
             </div>
         </div>
@@ -1167,7 +1262,7 @@
         <!-- Bubble chart page -->
         <div class="page" id="page-bubble">
             <nav class="nav-bar">
-                <span class="nav-title">Scatter Plot: GDP per Capita vs CO₂ Emissions per Capita (1850–2022). Bubble size = population.</span>
+                <span class="nav-title">CO₂ Emissions per Capita vs. GDP per Capita Bubble Chart</span>
                 <div class="nav-buttons">
                     <button class="nav-btn active" data-page="bubble">Bubble</button>
                     <button class="nav-btn" data-page="butterfly">Comparison</button>
@@ -1199,7 +1294,7 @@
                     <div class="chart-container" id="bubbleChart"></div>
                     <div class="bubble-chart-prompt" id="bubbleChartPrompt">Adjust the year slider to generate the graph</div>
                 </div>
-                <p class="bubble-disclaimer">GDP per capita in international-$ at 2011 prices. Bubble size = population.</p>
+                <p class="bubble-disclaimer">GDP in international-$ at 2011 prices. Bubble size = population.</p>
                 <p class="bubble-attribution">Global Carbon Budget (2025); Population based on various sources (2024); Bolt and van Zanden – Maddison Project Database 2023</p>
                 <div class="chart-legend">
                     <span class="legend-item"><span class="legend-dot" style="background:rgba(251,191,36,0.9)"></span> Africa</span>
@@ -1215,7 +1310,7 @@
         <!-- Comparison pie charts page -->
         <div class="page pie-page" id="page-butterfly">
             <nav class="nav-bar">
-                <span class="nav-title">Top 12 & Bottom 12 Countries by GDP per Capita and CO₂ Emissions per Capita — Double-Ring Donut Charts</span>
+                <span class="nav-title">Top & Bottom 12 Comparison</span>
                 <div class="nav-buttons">
                     <button class="nav-btn" data-page="bubble">Bubble</button>
                     <button class="nav-btn active" data-page="butterfly">Comparison</button>
@@ -1226,21 +1321,29 @@
                 </div>
             </nav>
             <div class="container">
+                <h2 class="pie-page-title">GDP & CO₂ Emissions — Top vs Bottom 12 Countries</h2>
                 <div class="pie-controls">
-                    <div class="pie-chart-toggle-wrap">
-                        <label>Chart:</label>
-                        <button type="button" class="pie-toggle-btn active" data-pie="top">Top 12</button>
-                        <button type="button" class="pie-toggle-btn" data-pie="bottom">Bottom 12</button>
-                    </div>
                     <label>Year</label>
                     <span class="year-display" id="pieYearDisplay">2022</span>
                     <input type="range" id="pieYearSlider" min="1850" max="2022" value="2022" style="width:280px">
                     <button class="btn btn-primary" id="piePlayBtn"><span id="piePlayIcon">▶</span> <span id="piePlayLabel">Play</span></button>
                 </div>
                 <div class="pie-chart-and-legend">
-                    <div class="pie-chart-legend-chart-group">
+                    <div class="pie-legend-section">
+                        <h3 class="pie-legend-title">Countries</h3>
                         <div class="pie-legend-wrap" id="pieLegendWrap"></div>
-                        <div class="pie-chart-single-wrap" id="pieChartContainer"></div>
+                    </div>
+                    <div class="pie-charts-container">
+                        <div class="pie-chart-card">
+                            <h3 class="pie-chart-title">Top 12 Countries</h3>
+                            <p class="pie-chart-subtitle">Outer: CO₂ per capita · Inner: GDP per capita</p>
+                            <div class="pie-chart-wrap" id="pieChartTop"></div>
+                        </div>
+                        <div class="pie-chart-card">
+                            <h3 class="pie-chart-title">Bottom 12 Countries</h3>
+                            <p class="pie-chart-subtitle">Outer: CO₂ per capita · Inner: GDP per capita</p>
+                            <div class="pie-chart-wrap" id="pieChartBottom"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1249,7 +1352,7 @@
         <!-- Choropleth maps page -->
         <div class="page" id="page-maps">
             <nav class="nav-bar">
-                <span class="nav-title">World Choropleth Maps: GDP per Capita and CO₂ Emissions per Capita by Country (1850–2022)</span>
+                <span class="nav-title">Choropleth Maps</span>
                 <div class="nav-buttons">
                     <button class="nav-btn" data-page="bubble">Bubble</button>
                     <button class="nav-btn" data-page="butterfly">Comparison</button>
@@ -1278,7 +1381,7 @@
         <!-- Time series line chart page -->
         <div class="page timeseries-page" id="page-timeseries">
             <nav class="nav-bar">
-                <span class="nav-title">GDP per Capita and CO₂ Emissions per Capita Trends Over Time (1850–2022)</span>
+                <span class="nav-title">Country Trends Over Time</span>
                 <div class="nav-buttons">
                     <button class="nav-btn" data-page="bubble">Bubble</button>
                     <button class="nav-btn" data-page="butterfly">Comparison</button>
@@ -1308,7 +1411,7 @@
                 </div>
                 <div class="timeseries-chart-wrap" id="timeseriesChart"></div>
                 <div class="timeseries-description" id="timeseriesDescription">
-                    <strong>About this chart:</strong> Line chart showing GDP per capita or CO₂ emissions per capita over time (1850–2022). Toggle between metrics to compare economic development vs carbon footprint. Select countries via the selector to highlight them with distinct colors; unselected countries appear in faint gray. GDP in international-$ at 2011 prices. Data: Global Carbon Budget (2025); Maddison Project Database 2023.
+                    <strong>About this chart:</strong> This time series shows how GDP per capita or CO₂ emissions per capita have evolved from 1850 to 2022. Select countries to highlight them with distinct colors; unselected countries appear in faint gray. GDP is in international-$ at 2011 prices. Data: Global Carbon Budget (2025); Maddison Project Database 2023.
                 </div>
             </div>
         </div>
@@ -1833,22 +1936,26 @@
                 });
                 const slider = document.getElementById('pieYearSlider');
                 const display = document.getElementById('pieYearDisplay');
-                const chartEl = document.getElementById('pieChartContainer');
+                const chartTopEl = document.getElementById('pieChartTop');
+                const chartBottomEl = document.getElementById('pieChartBottom');
                 const playBtn = document.getElementById('piePlayBtn');
                 const playIcon = document.getElementById('piePlayIcon');
                 const playLabel = document.getElementById('piePlayLabel');
-                if (!slider || !chartEl || typeof Plotly === 'undefined') return;
+                if (!slider || !chartTopEl || !chartBottomEl || typeof Plotly === 'undefined') return;
 
                 let playing = false;
                 let playInterval = null;
-                let currentChart = 'top';
-                let lastActiveData = null;
                 let highlightedCountry = null;
 
                 function getYearData(year) {
                     return data.filter(d => d.year === year && d.gdp_per_capita > 0 && d.emissions_per_capita >= 0 && d.country !== 'World');
                 }
 
+                function toPieLabel(country) {
+                    const words = (country || '').trim().split(/\s+/);
+                    if (words.length >= 2) return words.map(w => (w[0] || '').toUpperCase()).join('');
+                    return country;
+                }
                 function buildDoubleRingData(yearData, top20) {
                     const byEmissions = [...yearData].sort((a, b) => top20 ? (b.emissions_per_capita - a.emissions_per_capita) : (a.emissions_per_capita - b.emissions_per_capita));
                     const byGdp = [...yearData].sort((a, b) => top20 ? (b.gdp_per_capita - a.gdp_per_capita) : (a.gdp_per_capita - b.gdp_per_capita));
@@ -1875,18 +1982,20 @@
                     return { outerLabels, outerValues, outerColors, outerHoverTexts, innerLabels, innerValues, innerColors, innerHoverTexts };
                 }
 
-                function getBaseLayout(chartType) {
-                    const titleText = chartType === 'top' ? 'Top 12 by CO₂ per capita (outer) and GDP per capita (inner)' : 'Bottom 12 by CO₂ per capita (outer) and GDP per capita (inner)';
+                function getBaseLayout(chartEl, chartType) {
+                    const cw = chartEl.clientWidth || chartEl.offsetWidth || 350;
+                    const ch = chartEl.clientHeight || chartEl.offsetHeight || 350;
+                    const size = Math.max(250, Math.min(cw, ch, 450));
                     return {
-                        title: { text: titleText, font: { size: 14 }, x: 0.5, xanchor: 'center' },
+                        title: { text: '', font: { size: 1 } },
                         paper_bgcolor: 'rgba(17,17,17,0.4)',
                         plot_bgcolor: 'rgba(17,17,17,0.4)',
-                        font: { family: 'DM Sans', color: '#a3a3a3', size: 11 },
-                        margin: { t: 40, r: 20, b: 20, l: 20 },
-                        autosize: true,
+                        font: { family: 'DM Sans', color: '#a3a3a3', size: 10 },
+                        margin: { t: 25, r: 35, b: 25, l: 35 },
+                        width: size,
+                        height: size,
                         hoverlabel: { bgcolor: '#1a1a1a', bordercolor: '#2a2a2a', font: { color: '#e5e5e5' }, namelength: -1 },
-                        showlegend: false,
-                        legend: { orientation: 'h', x: 0.5, xanchor: 'center', y: -0.12, font: { color: '#a3a3a3', size: 10 } }
+                        showlegend: false
                     };
                 }
 
@@ -1900,10 +2009,7 @@
                     const yearData = getYearData(year);
                     const topData = buildDoubleRingData(yearData, true);
                     const bottomData = buildDoubleRingData(yearData, false);
-                    const activeData = currentChart === 'top' ? topData : bottomData;
-                    if (activeData.outerLabels.length === 0 && activeData.innerLabels.length === 0) return;
                     function makeDoubleRingTraces(d) {
-                        const ringBorder = { color: 'rgba(255,255,255,0.6)', width: 2 };
                         const outerPull = d.outerLabels.map(c => highlightedCountry === c ? 0.05 : 0);
                         const innerPull = d.innerLabels.map(c => highlightedCountry === c ? 0.05 : 0);
                         const outerLineWidth = d.outerLabels.map(c => highlightedCountry === c ? 5 : 2);
@@ -1911,15 +2017,16 @@
                         return [
                             {
                                 type: 'pie',
-                                labels: d.outerLabels,
+                                labels: d.outerLabels.map(toPieLabel),
                                 values: d.outerValues,
                                 hole: 0.55,
                                 domain: { x: [0.02, 0.98], y: [0.02, 0.98] },
                                 marker: { colors: d.outerColors, line: { color: 'rgba(255,255,255,0.6)', width: outerLineWidth } },
                                 pull: outerPull,
-                                textinfo: 'none',
-                                textposition: 'none',
+                                textinfo: 'label',
+                                textposition: 'outside',
                                 textfont: { size: 9, color: '#e5e5e5' },
+                                outsidetextfont: { size: 9, color: '#e5e5e5' },
                                 hoverinfo: 'text',
                                 text: d.outerHoverTexts,
                                 name: 'CO₂ (outer)',
@@ -1927,15 +2034,16 @@
                             },
                             {
                                 type: 'pie',
-                                labels: d.innerLabels,
+                                labels: d.innerLabels.map(toPieLabel),
                                 values: d.innerValues,
                                 hole: 0.75,
                                 domain: { x: [0.15, 0.85], y: [0.15, 0.85] },
                                 marker: { colors: d.innerColors, line: { color: 'rgba(255,255,255,0.6)', width: innerLineWidth } },
                                 pull: innerPull,
-                                textinfo: 'none',
-                                textposition: 'none',
-                                textfont: { size: 8, color: '#e5e5e5' },
+                                textinfo: 'label',
+                                textposition: 'inside',
+                                insidetextorientation: 'radial',
+                                textfont: { size: 9, color: '#e5e5e5' },
                                 hoverinfo: 'text',
                                 text: d.innerHoverTexts,
                                 name: 'GDP (inner)',
@@ -1943,18 +2051,27 @@
                             }
                         ];
                     }
-
-                    lastActiveData = activeData;
-                    const traces = makeDoubleRingTraces(activeData);
-                    const layout = { ...getBaseLayout(currentChart) };
-                    Plotly.newPlot(chartEl, traces, layout, { responsive: true, displayModeBar: false });
-                    updatePieLegend(activeData);
+                    const topTraces = topData.outerLabels.length || topData.innerLabels.length ? makeDoubleRingTraces(topData) : null;
+                    const bottomTraces = bottomData.outerLabels.length || bottomData.innerLabels.length ? makeDoubleRingTraces(bottomData) : null;
+                    if (topTraces) {
+                        Plotly.newPlot(chartTopEl, topTraces, getBaseLayout(chartTopEl, 'top'), { responsive: true, displayModeBar: false });
+                    } else {
+                        chartTopEl.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#737373;font-size:0.9rem;">No data</div>';
+                    }
+                    if (bottomTraces) {
+                        Plotly.newPlot(chartBottomEl, bottomTraces, getBaseLayout(chartBottomEl, 'bottom'), { responsive: true, displayModeBar: false });
+                    } else {
+                        chartBottomEl.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#737373;font-size:0.9rem;">No data</div>';
+                    }
+                    updatePieLegend(topData, bottomData);
                 }
-                function updatePieLegend(d) {
+                function updatePieLegend(topData, bottomData) {
                     const wrap = document.getElementById('pieLegendWrap');
                     if (!wrap) return;
-                    if (!d || (!d.outerLabels?.length && !d.innerLabels?.length)) { wrap.innerHTML = ''; return; }
-                    const allCountries = [...new Set([...d.outerLabels, ...d.innerLabels])].sort();
+                    const topCountries = topData ? [...(topData.outerLabels || []), ...(topData.innerLabels || [])] : [];
+                    const bottomCountries = bottomData ? [...(bottomData.outerLabels || []), ...(bottomData.innerLabels || [])] : [];
+                    const allCountries = [...new Set([...topCountries, ...bottomCountries])].sort();
+                    if (!allCountries.length) { wrap.innerHTML = ''; return; }
                     wrap.innerHTML = allCountries.map(c => {
                         const col = countryToColor[c] || '#94a3b8';
                         const isHighlighted = highlightedCountry === c;
@@ -1970,21 +2087,9 @@
                         });
                     });
                 }
-                document.querySelectorAll('.pie-toggle-btn[data-pie]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        document.querySelectorAll('.pie-toggle-btn[data-pie]').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        currentChart = btn.dataset.pie;
-                        highlightedCountry = null;
-                        updatePies();
-                    });
-                });
-                let resizeTimeout;
                 window.addEventListener('resize', () => {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(() => {
-                        if (chartEl && chartEl.querySelector('.plotly')) Plotly.Plots.resize('pieChartContainer');
-                    }, 150);
+                    if (chartTopEl?.querySelector('.plotly')) Plotly.Plots.resize('pieChartTop');
+                    if (chartBottomEl?.querySelector('.plotly')) Plotly.Plots.resize('pieChartBottom');
                 });
 
                 slider.addEventListener('input', () => { if (playing) { playing = false; if (playInterval) clearInterval(playInterval); playBtn?.classList.remove('playing'); if (playIcon) playIcon.textContent = '▶'; if (playLabel) playLabel.textContent = 'Play'; } highlightedCountry = null; updatePies(); });
@@ -2229,7 +2334,7 @@
                             x: pts.map(p => p.year),
                             y: pts.map(p => plotY(p.value)),
                             customdata: pts.map(p => [p.gdp, p.emissions, p.population, p.continent]),
-                            hovertemplate: '<b>%{fullData.name}</b><br>Year: %{x}<br>GDP per capita: $%{customdata[0]:,.0f}<br>CO₂ per capita: %{customdata[1]:.2f} tonnes<br>Population: %{customdata[2]:,.0f}<br>Continent: %{customdata[3]}<extra></extra>',
+                            hoverinfo: 'skip',
                             line: { color: 'rgba(100,100,100,0.08)', width: 1 },
                             connectgaps: false
                         });
@@ -2273,7 +2378,7 @@
                         showlegend: true,
                         legend: { x: 1.02, y: 1, xanchor: 'left', bgcolor: 'rgba(0,0,0,0)', font: { color: '#e5e5e5' } },
                         hoverlabel: { bgcolor: '#1a1a1a', bordercolor: '#2a2a2a', font: { color: '#e5e5e5' }, namelength: -1 },
-                        height: Math.max(450, window.innerHeight - 280)
+                        height: Math.min(580, Math.max(400, chartEl.clientHeight || chartEl.offsetHeight || 450))
                     };
 
                     if (traces.length === 0) {
@@ -2288,7 +2393,7 @@
                 if (!timeseriesChartInitialized) {
                     timeseriesChartInitialized = true;
                     const desc = document.getElementById('timeseriesDescription');
-                    if (desc) desc.innerHTML = '<strong>About this chart:</strong> Line chart of GDP per capita over time (1850–2022). Select countries to highlight their trajectories; unselected appear in faint gray. GDP in international-$ at 2011 prices. Data: Maddison Project Database 2023.';
+                    if (desc) desc.innerHTML = '<strong>About this chart:</strong> GDP per capita over time (1850–2022). Select countries to highlight them. Unselected countries appear in faint gray. GDP in international-$ at 2011 prices. Data: Maddison Project Database 2023.';
                     toggleBtns.forEach(btn => {
                         btn.addEventListener('click', () => {
                             toggleBtns.forEach(b => b.classList.remove('active'));
@@ -2297,8 +2402,8 @@
                             const desc = document.getElementById('timeseriesDescription');
                             if (desc) {
                                 desc.innerHTML = currentMetric === 'gdp'
-                                    ? '<strong>About this chart:</strong> Line chart of GDP per capita over time (1850–2022). Select countries to highlight their trajectories; unselected appear in faint gray. GDP in international-$ at 2011 prices. Data: Maddison Project Database 2023.'
-                                    : '<strong>About this chart:</strong> Line chart of CO₂ emissions per capita over time (1850–2022). Select countries to highlight their trajectories; unselected appear in faint gray. Data: Global Carbon Budget (2025).';
+                                    ? '<strong>About this chart:</strong> GDP per capita over time (1850–2022). Select countries to highlight them. Unselected countries appear in faint gray. GDP in international-$ at 2011 prices. Data: Maddison Project Database 2023.'
+                                    : '<strong>About this chart:</strong> CO₂ emissions per capita over time (1850–2022). Select countries to highlight them. Unselected countries appear in faint gray. Data: Global Carbon Budget (2025).';
                             }
                             updateChart();
                         });
@@ -2328,13 +2433,13 @@
         <div class="chatbot-panel" id="chatbotPanel">
             <div class="chatbot-header">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                <h3>Data Analysis Assistant</h3>
+                <h3>Data Insights AI</h3>
                 <button type="button" class="chatbot-close" id="chatbotClose" aria-label="Close chat"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
             <div class="chatbot-messages" id="chatbotMessages"></div>
             <div class="chatbot-input-wrap">
                 <form id="chatbotForm">
-                    <textarea class="chatbot-input" id="chatbotInput" placeholder="Ask anything about the data" rows="1"></textarea>
+                    <textarea class="chatbot-input" id="chatbotInput" placeholder="Ask about GDP, CO₂ emissions, trends, comparisons..." rows="1"></textarea>
                     <button type="submit" class="chatbot-send" id="chatbotSend">Send</button>
                 </form>
             </div>
@@ -2378,7 +2483,7 @@
         const years = (data.years || [...new Set(dataset.map(d => d.year))]).filter(y => y >= 1850 && y <= 2022).sort((a,b)=>a-b);
         const latestYear = years.length ? Math.max(...years) : 2022;
 
-        const COUNTRY_ALIASES = { 'usa': 'United States', 'us': 'United States', 'america': 'United States', 'uk': 'United Kingdom', 'britain': 'United Kingdom', 'england': 'United Kingdom', 'uae': 'United Arab Emirates', 'drc': 'Democratic Republic of Congo', 'congo': 'Congo', 'south korea': 'South Korea', 'north korea': 'North Korea', 'taiwan': 'Taiwan', 'hong kong': 'Hong Kong', 'russia': 'Russia', 'china': 'China', 'india': 'India', 'japan': 'Japan', 'germany': 'Germany', 'france': 'France', 'brazil': 'Brazil', 'australia': 'Australia', 'canada': 'Canada' };
+        const COUNTRY_ALIASES = { 'usa': 'United States', 'us': 'United States', 'uk': 'United Kingdom', 'uae': 'United Arab Emirates', 'drc': 'Democratic Republic of Congo' };
         function findCountry(name) {
             const n = (name || '').toLowerCase().trim();
             if (COUNTRY_ALIASES[n]) return countries.includes(COUNTRY_ALIASES[n]) ? COUNTRY_ALIASES[n] : null;
@@ -2396,7 +2501,7 @@
             if (!c || !y) return null;
             return dataset.find(d => d.country === c && d.year === y);
         }
-        function getCountryData(country, metric) {
+        function getCountryData(country) {
             const c = findCountry(country);
             if (!c) return [];
             return dataset.filter(d => d.country === c).sort((a,b) => a.year - b.year);
@@ -2415,7 +2520,7 @@
             return typeof x === 'number' ? x.toLocaleString(undefined, { maximumFractionDigits: 2 }) : String(x);
         }
 
-        const WELCOME = "Hi! I'm your personal Data Analysis Assistant. I know the full GDP per capita and CO₂ emissions dataset (1850–2022) for " + (countries.length || 0) + " countries. Ask me anything—e.g. \"What's China's GDP in 2020?\", \"Top 10 by emissions\", \"Compare USA and UK\", or \"What's the trend over time?\"";
+        const WELCOME = "Hi! I'm your Data Insights AI. I know the full GDP per capita and CO₂ emissions dataset (1850–2022) for " + (countries.length || 0) + " countries. Ask me anything—e.g. \"What's China's GDP in 2020?\", \"Top 10 by emissions\", \"Compare USA and UK\", or \"What's the trend over time?\"";
         addBotMessage(WELCOME);
 
         function addBotMessage(text, isTyping) {
@@ -2437,30 +2542,23 @@
         function processQuestion(q) {
             const lower = q.toLowerCase().trim();
             const words = lower.split(/\s+/);
-
-            if (/^(hi|hello|hey|help)\b/.test(lower)) {
-                return WELCOME;
-            }
+            if (/^(hi|hello|hey|help)\b/.test(lower)) return WELCOME;
 
             const countryMatches = countries.filter(c => {
                 const cn = c.toLowerCase();
                 return lower.includes(cn) || words.some(w => w.length > 3 && cn.includes(w));
             });
-            const yearInQ = getYear(q) || (lower.includes('2022') ? 2022 : lower.includes('2020') ? 2020 : lower.includes('2010') ? 2010 : null) || latestYear;
+            const yearInQ = getYear(q) || (lower.includes('2022') ? 2022 : lower.includes('2020') ? 2020 : null) || latestYear;
 
             if (countryMatches.length >= 1 && countryMatches.length <= 3) {
                 const recs = countryMatches.map(c => getRecord(c, yearInQ)).filter(Boolean);
-                if (recs.length) {
-                    return recs.map(r => `${r.country} (${r.year}): GDP per capita $${formatNum(r.gdp_per_capita)}, CO₂ emissions ${(r.emissions_per_capita || 0).toFixed(3)} t/capita, population ${formatNum(r.population)}`).join('\n\n');
-                }
+                if (recs.length) return recs.map(r => `${r.country} (${r.year}): GDP per capita $${formatNum(r.gdp_per_capita)}, CO₂ emissions ${(r.emissions_per_capita || 0).toFixed(3)} t/capita, population ${formatNum(r.population)}`).join('\n\n');
             }
 
             if (/\b(top|highest|most|largest)\s*(5|10|15|20)?\b.*(emission|co2|co₂|carbon)/i.test(q) || /emission.*top/i.test(q)) {
                 const n = parseInt((q.match(/(\d+)/) || [null, 10])[1], 10) || 10;
                 const list = topN('emissions_per_capita', yearInQ, n, true);
-                if (list.length) {
-                    return `Top ${list.length} by CO₂ emissions per capita (${list[0].year}):\n` + list.map((r,i) => `${i+1}. ${r.country}: ${(r.emissions_per_capita||0).toFixed(3)} t/capita`).join('\n');
-                }
+                if (list.length) return `Top ${list.length} by CO₂ emissions per capita (${list[0].year}):\n` + list.map((r,i) => `${i+1}. ${r.country}: ${(r.emissions_per_capita||0).toFixed(3)} t/capita`).join('\n');
             }
             if (/\b(bottom|lowest|least)\s*(5|10|15|20)?\b.*(emission|co2)/i.test(q)) {
                 const n = parseInt((q.match(/(\d+)/) || [null, 10])[1], 10) || 10;
@@ -2471,9 +2569,7 @@
             if (/\b(top|highest|richest)\s*(5|10|15|20)?\b.*(gdp|wealth)/i.test(q) || /gdp.*top/i.test(q)) {
                 const n = parseInt((q.match(/(\d+)/) || [null, 10])[1], 10) || 10;
                 const list = topN('gdp_per_capita', yearInQ, n, true);
-                if (list.length) {
-                    return `Top ${list.length} by GDP per capita (${list[0].year}):\n` + list.map((r,i) => `${i+1}. ${r.country}: $${formatNum(r.gdp_per_capita)}`).join('\n');
-                }
+                if (list.length) return `Top ${list.length} by GDP per capita (${list[0].year}):\n` + list.map((r,i) => `${i+1}. ${r.country}: $${formatNum(r.gdp_per_capita)}`).join('\n');
             }
             if (/\b(bottom|lowest|poorest)\s*(5|10|15|20)?\b.*(gdp|wealth)/i.test(q)) {
                 const n = parseInt((q.match(/(\d+)/) || [null, 10])[1], 10) || 10;
@@ -2482,77 +2578,40 @@
             }
 
             if (/\bcompare\b.*\b(and|vs|versus)\b/i.test(q) || (countryMatches.length === 2 && /compare|vs|versus/.test(lower))) {
-                const c1 = countryMatches[0] || findCountry(words[words.indexOf('compare') + 1]);
-                const c2 = countryMatches[1] || findCountry(words[words.indexOf('and') + 1] || words[words.indexOf('vs') + 1]);
+                const c1 = countryMatches[0], c2 = countryMatches[1];
                 if (c1 && c2) {
                     const r1 = getRecord(c1, yearInQ), r2 = getRecord(c2, yearInQ);
-                    if (r1 && r2) {
-                        return `${c1} vs ${c2} (${yearInQ}):\n` +
-                            `GDP/capita: $${formatNum(r1.gdp_per_capita)} vs $${formatNum(r2.gdp_per_capita)}\n` +
-                            `CO₂/capita: ${(r1.emissions_per_capita||0).toFixed(3)} vs ${(r2.emissions_per_capita||0).toFixed(3)} t/capita\n` +
-                            `Population: ${formatNum(r1.population)} vs ${formatNum(r2.population)}`;
-                    }
+                    if (r1 && r2) return `${c1} vs ${c2} (${yearInQ}):\nGDP/capita: $${formatNum(r1.gdp_per_capita)} vs $${formatNum(r2.gdp_per_capita)}\nCO₂/capita: ${(r1.emissions_per_capita||0).toFixed(3)} vs ${(r2.emissions_per_capita||0).toFixed(3)} t/capita\nPopulation: ${formatNum(r1.population)} vs ${formatNum(r2.population)}`;
                 }
             }
 
             if (countryMatches.length === 1) {
-                const series = getCountryData(countryMatches[0], 'gdp_per_capita');
-                if (series.length && (/trend|over time|history|change|growth|evolution/i.test(q))) {
+                const series = getCountryData(countryMatches[0]);
+                if (series.length && /trend|over time|history|change|growth/i.test(q)) {
                     const first = series[0], last = series[series.length - 1];
                     const gdpGrowth = last && first ? ((last.gdp_per_capita - first.gdp_per_capita) / first.gdp_per_capita * 100).toFixed(1) : 'N/A';
-                    const emFirst = series.find(d => d.emissions_per_capita > 0);
                     const emLast = series.filter(d => d.emissions_per_capita > 0).pop();
+                    const emFirst = series.find(d => d.emissions_per_capita > 0);
                     const emGrowth = emFirst && emLast ? ((emLast.emissions_per_capita - emFirst.emissions_per_capita) / emFirst.emissions_per_capita * 100).toFixed(1) : 'N/A';
                     return `${countryMatches[0]} over time (${first.year}–${last.year}): GDP/capita grew ~${gdpGrowth}%; CO₂/capita change ~${emGrowth}%. Latest: GDP $${formatNum(last.gdp_per_capita)}, emissions ${(last.emissions_per_capita||0).toFixed(3)} t/capita.`;
                 }
                 const rec = getRecord(countryMatches[0], yearInQ);
-                if (rec) {
-                    return `${rec.country} (${rec.year}): GDP per capita $${formatNum(rec.gdp_per_capita)}, CO₂ ${(rec.emissions_per_capita||0).toFixed(3)} t/capita, population ${formatNum(rec.population)}, continent ${rec.continent || 'N/A'}.`;
-                }
-            }
-
-            if (/correlation|relationship|gdp.*emission|emission.*gdp/i.test(q)) {
-                const y = yearInQ;
-                const sample = dataset.filter(d => d.year === y && d.gdp_per_capita > 0 && d.emissions_per_capita > 0 && d.country !== 'World').slice(0, 100);
-                if (sample.length) {
-                    const avgGdp = sample.reduce((s,d) => s + d.gdp_per_capita, 0) / sample.length;
-                    const avgEm = sample.reduce((s,d) => s + d.emissions_per_capita, 0) / sample.length;
-                    return `In ${y}, there's a strong positive correlation: higher GDP per capita generally means higher CO₂ emissions per capita. Richer countries tend to emit more. Data: ~${sample.length} countries, avg GDP $${formatNum(avgGdp)}, avg emissions ${avgEm.toFixed(3)} t/capita.`;
-                }
+                if (rec) return `${rec.country} (${rec.year}): GDP per capita $${formatNum(rec.gdp_per_capita)}, CO₂ ${(rec.emissions_per_capita||0).toFixed(3)} t/capita, population ${formatNum(rec.population)}, continent ${rec.continent || 'N/A'}.`;
             }
 
             if (/story|insight|conclusion|summary|overview|what does the data/i.test(q)) {
-                const latest = latestYear;
-                const topGdp = topN('gdp_per_capita', latest, 3, true);
-                const topEm = topN('emissions_per_capita', latest, 3, true);
-                return `Story: The data shows GDP per capita and CO₂ emissions per capita (1850–2022). Key insights:\n` +
-                    `• GDP and emissions are strongly correlated—richer economies often emit more.\n` +
-                    `• Top GDP (${latest}): ${topGdp.map(r=>r.country).join(', ')}\n` +
-                    `• Top emitters (${latest}): ${topEm.map(r=>r.country).join(', ')}\n` +
-                    `• Global trends: industrialization drove both GDP and emissions upward; recent years show some decoupling in advanced economies.`;
-            }
-
-            if (/continent|region|africa|asia|europe|america|oceania/i.test(q)) {
-                const cont = (lower.match(/(africa|asia|europe|north america|south america|oceania|other)/i) || [])[0];
-                const key = cont ? (cont.toLowerCase().includes('north') ? 'North America' : cont.toLowerCase().includes('south') ? 'South America' : cont.charAt(0).toUpperCase() + cont.slice(1).toLowerCase()) : null;
-                const byCont = key ? dataset.filter(d => d.year === yearInQ && (d.continent || '').toLowerCase().includes((key||'').toLowerCase())) : [];
-                if (byCont.length) {
-                    const avgGdp = byCont.reduce((s,d) => s + (d.gdp_per_capita||0), 0) / byCont.length;
-                    const avgEm = byCont.reduce((s,d) => s + (d.emissions_per_capita||0), 0) / byCont.length;
-                    const top = byCont.sort((a,b) => (b.gdp_per_capita||0) - (a.gdp_per_capita||0))[0];
-                    return `${key || 'Region'} (${yearInQ}): ${byCont.length} countries. Avg GDP $${formatNum(avgGdp)}, avg emissions ${avgEm.toFixed(3)} t/capita. Highest GDP: ${top?.country} ($${formatNum(top?.gdp_per_capita)}).`;
-                }
+                const topGdp = topN('gdp_per_capita', latestYear, 3, true);
+                const topEm = topN('emissions_per_capita', latestYear, 3, true);
+                return `Story: The data shows GDP per capita and CO₂ emissions per capita (1850–2022). Key insights:\n• GDP and emissions are strongly correlated—richer economies often emit more.\n• Top GDP (${latestYear}): ${topGdp.map(r=>r.country).join(', ')}\n• Top emitters (${latestYear}): ${topEm.map(r=>r.country).join(', ')}\n• Global trends: industrialization drove both GDP and emissions upward; recent years show some decoupling in advanced economies.`;
             }
 
             const singleRec = countryMatches[0] ? getRecord(countryMatches[0], yearInQ) : null;
-            if (singleRec) {
-                return `${singleRec.country} (${singleRec.year}): GDP $${formatNum(singleRec.gdp_per_capita)}, CO₂ ${(singleRec.emissions_per_capita||0).toFixed(3)} t/capita, pop. ${formatNum(singleRec.population)}.`;
-            }
+            if (singleRec) return `${singleRec.country} (${singleRec.year}): GDP $${formatNum(singleRec.gdp_per_capita)}, CO₂ ${(singleRec.emissions_per_capita||0).toFixed(3)} t/capita, pop. ${formatNum(singleRec.population)}.`;
 
             return "I can answer questions about GDP per capita, CO₂ emissions, population, and trends (1850–2022). Try: \"What's [country]'s GDP in [year]?\", \"Top 10 by emissions\", \"Compare USA and China\", or \"What's the story of the data?\"";
         }
 
-        form?.addEventListener('submit', async (e) => {
+        form?.addEventListener('submit', (e) => {
             e.preventDefault();
             const text = (input?.value || '').trim();
             if (!text) return;
@@ -2569,10 +2628,7 @@
         });
 
         input?.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                form?.requestSubmit();
-            }
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form?.requestSubmit(); }
         });
     })();
     </script>
