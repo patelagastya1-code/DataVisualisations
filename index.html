@@ -143,6 +143,64 @@
             width: 20px;
             height: 20px;
         }
+        .chart-info-wrap {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .chart-info-btn {
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 50%;
+            background: rgba(26,26,26,0.8);
+            color: var(--text-secondary);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+        }
+        .chart-info-btn:hover {
+            background: rgba(255,255,255,0.12);
+            color: var(--white);
+            border-color: rgba(255,255,255,0.4);
+        }
+        .chart-info-desc {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: min(420px, calc(100vw - 2rem));
+            max-height: 85vh;
+            padding: 1.25rem 1.5rem;
+            background: rgba(17,17,17,0.98);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+            z-index: 1000;
+            white-space: normal;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .chart-info-wrap:hover .chart-info-desc {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
         .nav-back:hover,
         .nav-download:hover {
             background: linear-gradient(90deg, #22d3ee, #34d399, #2dd4bf, #22d3ee);
@@ -174,13 +232,25 @@
         }
         .home-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-size: clamp(2rem, 6.5vw, 4.5rem);
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             color: var(--white);
             letter-spacing: 0.03em;
             line-height: 1.1;
             animation: titleFadeIn 1s ease-out;
+        }
+        .home-subtitle {
+            font-family: 'DM Sans', sans-serif;
+            font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            max-width: 36rem;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+            animation: titleFadeIn 1s ease-out 0.15s both;
         }
         @keyframes titleFadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -292,16 +362,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1.5rem;
             font-family: 'Exo 2', sans-serif;
-            font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+            font-size: clamp(0.75rem, 1.2vw, 0.9rem);
             font-weight: 400;
             color: rgba(255,255,255,0.95);
-            line-height: 1.6;
+            line-height: 1.55;
             opacity: 0;
             z-index: 3;
             transition: opacity 0.35s ease;
             text-align: center;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .home-grid-btn:hover::after {
             background: rgba(17,17,17,0.95);
@@ -725,8 +797,10 @@
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; transition: transform 0.2s; }
         .legend-item:hover .legend-dot { transform: scale(1.2); }
 
+        /* Chart pages - consistent layout matching pie page */
+        .chart-page { padding: 0.75rem 1.25rem 1rem; }
         /* Comparison pie charts page */
-        .pie-page { padding: 0.75rem 1.25rem 1rem; overflow: hidden; }
+        .pie-page { overflow: hidden; }
         .pie-page .container {
             width: 100%;
             max-width: 100%;
@@ -740,21 +814,11 @@
             flex-direction: column;
             gap: 0.5rem;
         }
-        .pie-page-title {
-            font-family: 'Sora', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--white);
-            text-align: center;
-            margin: 0 0 0.25rem 0;
-            flex-shrink: 0;
-            letter-spacing: 0.02em;
-        }
         .pie-controls {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 1rem;
             margin-bottom: 0;
             padding: 0.5rem 1rem;
@@ -764,6 +828,65 @@
             animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
             flex-shrink: 0;
         }
+        .pie-timeline {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+        .pie-kpis {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+            justify-content: flex-end;
+        }
+        .pie-kpi-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.4rem 0.75rem;
+            background: rgba(26,26,26,0.9);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            min-width: 100px;
+        }
+        .pie-kpi-value {
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+        .pie-kpi-label {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+            text-align: center;
+            line-height: 1.2;
+        }
+        .pie-top-n-control {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.6rem;
+            background: rgba(26,26,26,0.9);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+        }
+        .pie-top-n-control label { margin: 0; font-size: 0.85rem; }
+        .pie-top-n-control select {
+            padding: 0.25rem 0.5rem;
+            background: rgba(17,17,17,0.9);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .pie-top-n-control span { font-size: 0.85rem; color: var(--text-secondary); }
         .pie-controls label { font-family: 'DM Sans', sans-serif; color: var(--text-secondary); font-size: 0.9rem; }
         .pie-controls .year-display { font-family: 'Sora', sans-serif; font-weight: 600; }
         .maps-controls .year-display { font-family: 'Sora', sans-serif; font-weight: 600; }
@@ -1026,6 +1149,7 @@
         /* Responsive: adapt to all screen sizes and zoom levels */
         @media (max-width: 1200px) {
             .page { padding: 1.25rem; }
+            .chart-page { padding: 0.75rem 1.25rem 1rem; }
             .nav-bar { padding: 0.75rem 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
             .nav-title { font-size: 0.9rem; }
             .home-grid-section { grid-template-columns: 1fr; grid-template-rows: auto; gap: 0.75rem; padding: 1rem; }
@@ -1039,12 +1163,16 @@
         }
         @media (max-width: 768px) {
             .page { padding: 1rem; }
+            .chart-page { padding: 0.75rem 1rem; }
             .nav-bar { padding: 0.6rem 1rem; flex-direction: column; align-items: stretch; }
             .nav-title { text-align: center; }
             .nav-buttons { justify-content: center; }
             .home-section { padding: 1.5rem; }
-            .home-title { font-size: clamp(1.8rem, 6vw, 3rem); }
+            .home-title { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+            .home-subtitle { font-size: clamp(0.85rem, 1.5vw, 1rem); }
             .bubble-controls, .pie-controls, .maps-controls, .timeseries-controls { flex-direction: column; align-items: stretch; gap: 1rem; }
+            .pie-timeline { justify-content: center; }
+            .pie-kpis { justify-content: center; }
             .control-group:not(:first-child)::before { display: none; }
             .country-selector-trigger { min-width: 100%; }
             input[type="range"] { max-width: 100% !important; width: 100% !important; }
@@ -1057,9 +1185,8 @@
         }
         @media (max-width: 480px) {
             .page { padding: 0.75rem; }
-            .pie-page { padding: 0.5rem 0.75rem; }
+            .chart-page { padding: 0.5rem 0.75rem; }
             .pie-page .container { height: calc(100vh - 130px); max-height: calc(100vh - 130px); }
-            .pie-page-title { font-size: 0.95rem; }
             .pie-chart-title { font-size: 0.85rem; }
             .pie-chart-subtitle { font-size: 0.65rem; }
             .nav-btn { padding: 0.4rem 0.7rem; font-size: 0.8rem; }
@@ -1230,7 +1357,9 @@
         <!-- Homepage -->
         <div class="page active" id="page-home">
             <div class="home-section" id="homeHero">
-                <h1 class="home-title">The <span class="title-gradient">Visualisation</span> of GDP vs CO₂ Emissions</h1>
+                <h1 class="home-title">The <span class="title-gradient">Visualisation</span> of GDP Per Capita vs CO₂ Emissions Per Capita</h1>
+                <p class="home-subtitle">Exploring the relationship between economic growth and carbon output across nations between 1850 and 2022 and through various interactive visualisations
+                </p>
                 <div class="home-arrow-wrap">
                     <button class="home-arrow-btn" id="homeArrowBtn" aria-label="View visualizations">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1242,38 +1371,42 @@
             <div class="home-grid-section" id="homeGrid">
                 <button class="home-grid-btn" data-page="bubble">
                     <span class="btn-text">Bubble Chart</span>
-                    <span class="btn-desc">Scatter plot of GDP vs CO₂ emissions. Bubble size represents population. Explore by year and country.</span>
+                    <span class="btn-desc">An interactive scatter plot where each country is a bubble. GDP per capita runs along the x-axis and CO₂ emissions per capita along the y-axis, with bubble size representing population. Both axes use logarithmic scales to reveal patterns across vast ranges—from low-income nations to wealthy economies. Countries are colored by continent. Drag the year slider (1850–2022) to animate through history; use the country selector to add or remove countries for focused comparison; click a bubble to pin that country. The chart explores the link between economic development and environmental impact—do richer countries pollute more per person? Watch how the global distribution shifts as nations industrialize.</span>
                 </button>
                 <button class="home-grid-btn" data-page="butterfly">
-                    <span class="btn-text">Top & Bottom 12 Comparison</span>
-                    <span class="btn-desc">Double-ring pie charts comparing top 20 and bottom 20 countries by GDP and CO₂ emissions. Explore by year.</span>
+                    <span class="btn-text">Pie Charts</span>
+                    <span class="btn-desc">Two double-ring donut charts side by side—one for the top performers, one for the bottom. In each chart, the outer ring shows countries ranked by CO₂ emissions per capita; the inner ring shows countries ranked by GDP per capita. Choose how many countries to include (5, 10, 12, 15, or 20). KPI boxes show what share of world GDP and world CO₂ emissions those top countries represent. Use the year slider to move through 1850–2022; change the "Top" dropdown to adjust the number of countries; click a country in the legend to highlight it across both rings. This view reveals the concentration of wealth and emissions—how much of the world's economy and pollution is dominated by a handful of nations versus the long tail of smaller contributors.</span>
                 </button>
                 <button class="home-grid-btn" data-page="maps">
                     <span class="btn-text">Choropleth Maps</span>
-                    <span class="btn-desc">World maps colored by GDP or CO₂ emissions. Toggle 2D/3D and explore by year.</span>
+                    <span class="btn-desc">A world map where each country is colored by a metric—either GDP per capita or CO₂ emissions per capita. Darker colors indicate higher values; lighter colors indicate lower values. Toggle between "GDP per Capita" and "CO₂ Emissions per Capita" to compare the two metrics; switch between a flat 2D map and an interactive 3D globe for a different perspective. Drag the year slider to see how the map changes from 1850 to 2022. These maps show where wealth and emissions are concentrated on Earth—how regional patterns of development and pollution have shifted over nearly two centuries of industrialization.</span>
                 </button>
                 <button class="home-grid-btn" data-page="timeseries">
-                    <span class="btn-text">Country Trends</span>
-                    <span class="btn-desc">Line charts of GDP per capita or CO₂ emissions over time (1850–2022). Compare multiple countries with custom colors.</span>
+                    <span class="btn-text">Line Graph</span>
+                    <span class="btn-desc">A multi-line time series chart spanning 1850–2022. Each country is a colored line; the x-axis is year, the y-axis is GDP per capita or CO₂ emissions per capita. Add multiple countries and assign custom colors to track their paths through history. Use the country selector to add or remove countries; toggle between the two metrics; click the color swatch next to a country to change its line color. This chart tells the story of industrialization and growth—how different nations have risen or fallen in prosperity and emissions over time. Compare leaders and laggards, or trace a single country's journey through the Industrial Revolution to the present.</span>
                 </button>
             </div>
         </div>
 
         <!-- Bubble chart page -->
-        <div class="page" id="page-bubble">
+        <div class="page chart-page" id="page-bubble">
             <nav class="nav-bar">
                 <span class="nav-title">CO₂ Emissions per Capita vs. GDP per Capita Bubble Chart</span>
                 <div class="nav-buttons">
-                    <button class="nav-btn active" data-page="bubble">Bubble</button>
-                    <button class="nav-btn" data-page="butterfly">Comparison</button>
-                    <button class="nav-btn" data-page="maps">Maps</button>
-                    <button class="nav-btn" data-page="timeseries">Trends</button>
+                    <button class="nav-btn active" data-page="bubble">Bubble Chart</button>
+                    <button class="nav-btn" data-page="butterfly">Pie Charts</button>
+                    <button class="nav-btn" data-page="maps">Choropleth Maps</button>
+                    <button class="nav-btn" data-page="timeseries">Line Graph</button>
                     <a class="nav-download" href="EMISSIONSVSGDP .xlsx" download title="Download data (XLSX)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
                     <button type="button" class="nav-back" data-page="home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
                 </div>
             </nav>
             <div class="container">
                 <div class="bubble-controls">
+                    <div class="chart-info-wrap">
+                        <button class="chart-info-btn" type="button" aria-label="Chart info">i</button>
+                        <div class="chart-info-desc">An interactive scatter plot where each country is a bubble. GDP per capita runs along the x-axis and CO₂ emissions per capita along the y-axis, with bubble size representing population. Both axes use logarithmic scales to reveal patterns across vast ranges—from low-income nations to wealthy economies. Countries are colored by continent. Drag the year slider (1850–2022) to animate through history; use the country selector to add or remove countries for focused comparison; click a bubble to pin that country. The chart explores the link between economic development and environmental impact—do richer countries pollute more per person? Watch how the global distribution shifts as nations industrialize.</div>
+                    </div>
                     <div class="control-group">
                         <label>Countries</label>
                         <button type="button" class="country-selector-trigger" id="countrySelectorTrigger">
@@ -1308,25 +1441,51 @@
         </div>
 
         <!-- Comparison pie charts page -->
-        <div class="page pie-page" id="page-butterfly">
+        <div class="page chart-page pie-page" id="page-butterfly">
             <nav class="nav-bar">
-                <span class="nav-title">Top & Bottom 12 Comparison</span>
+                <span class="nav-title" id="pieNavTitle">Top & Bottom 12 Comparison — GDP & CO₂ with KPIs</span>
                 <div class="nav-buttons">
-                    <button class="nav-btn" data-page="bubble">Bubble</button>
-                    <button class="nav-btn active" data-page="butterfly">Comparison</button>
-                    <button class="nav-btn" data-page="maps">Maps</button>
-                    <button class="nav-btn" data-page="timeseries">Trends</button>
+                    <button class="nav-btn" data-page="bubble">Bubble Chart</button>
+                    <button class="nav-btn active" data-page="butterfly">Pie Charts</button>
+                    <button class="nav-btn" data-page="maps">Choropleth Maps</button>
+                    <button class="nav-btn" data-page="timeseries">Line Graph</button>
                     <a class="nav-download" href="EMISSIONSVSGDP .xlsx" download title="Download data (XLSX)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
                     <button type="button" class="nav-back" data-page="home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
                 </div>
             </nav>
             <div class="container">
-                <h2 class="pie-page-title">GDP & CO₂ Emissions — Top vs Bottom 12 Countries</h2>
                 <div class="pie-controls">
-                    <label>Year</label>
-                    <span class="year-display" id="pieYearDisplay">2022</span>
-                    <input type="range" id="pieYearSlider" min="1850" max="2022" value="2022" style="width:280px">
-                    <button class="btn btn-primary" id="piePlayBtn"><span id="piePlayIcon">▶</span> <span id="piePlayLabel">Play</span></button>
+                    <div class="chart-info-wrap">
+                        <button class="chart-info-btn" type="button" aria-label="Chart info">i</button>
+                        <div class="chart-info-desc">Two double-ring donut charts side by side—one for the top performers, one for the bottom. In each chart, the outer ring shows countries ranked by CO₂ emissions per capita; the inner ring shows countries ranked by GDP per capita. Choose how many countries to include (5, 10, 12, 15, or 20). KPI boxes show what share of world GDP and world CO₂ emissions those top countries represent. Use the year slider to move through 1850–2022; change the "Top" dropdown to adjust the number of countries; click a country in the legend to highlight it across both rings. This view reveals the concentration of wealth and emissions—how much of the world's economy and pollution is dominated by a handful of nations versus the long tail of smaller contributors.</div>
+                    </div>
+                    <div class="pie-timeline">
+                        <label>Year</label>
+                        <span class="year-display" id="pieYearDisplay">2022</span>
+                        <input type="range" id="pieYearSlider" min="1850" max="2022" value="2022" style="width:220px">
+                        <button class="btn btn-primary" id="piePlayBtn"><span id="piePlayIcon">▶</span> <span id="piePlayLabel">Play</span></button>
+                    </div>
+                    <div class="pie-kpis">
+                        <div class="pie-top-n-control">
+                            <label for="pieTopN">Top</label>
+                            <select id="pieTopN">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="12" selected>12</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                            <span>countries</span>
+                        </div>
+                        <div class="pie-kpi-box">
+                            <span class="pie-kpi-value" id="pieKpiTopGdp">—</span>
+                            <span class="pie-kpi-label" id="pieKpiTopGdpLabel">Top 12 % World GDP</span>
+                        </div>
+                        <div class="pie-kpi-box">
+                            <span class="pie-kpi-value" id="pieKpiTopEmissions">—</span>
+                            <span class="pie-kpi-label" id="pieKpiTopEmissionsLabel">Top 12 % World CO₂</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="pie-chart-and-legend">
                     <div class="pie-legend-section">
@@ -1335,12 +1494,12 @@
                     </div>
                     <div class="pie-charts-container">
                         <div class="pie-chart-card">
-                            <h3 class="pie-chart-title">Top 12 Countries</h3>
+                            <h3 class="pie-chart-title" id="pieChartTopTitle">Top 12 Countries</h3>
                             <p class="pie-chart-subtitle">Outer: CO₂ per capita · Inner: GDP per capita</p>
                             <div class="pie-chart-wrap" id="pieChartTop"></div>
                         </div>
                         <div class="pie-chart-card">
-                            <h3 class="pie-chart-title">Bottom 12 Countries</h3>
+                            <h3 class="pie-chart-title" id="pieChartBottomTitle">Bottom 12 Countries</h3>
                             <p class="pie-chart-subtitle">Outer: CO₂ per capita · Inner: GDP per capita</p>
                             <div class="pie-chart-wrap" id="pieChartBottom"></div>
                         </div>
@@ -1350,20 +1509,24 @@
         </div>
 
         <!-- Choropleth maps page -->
-        <div class="page" id="page-maps">
+        <div class="page chart-page" id="page-maps">
             <nav class="nav-bar">
                 <span class="nav-title">Choropleth Maps</span>
                 <div class="nav-buttons">
-                    <button class="nav-btn" data-page="bubble">Bubble</button>
-                    <button class="nav-btn" data-page="butterfly">Comparison</button>
-                    <button class="nav-btn" data-page="maps">Maps</button>
-                    <button class="nav-btn" data-page="timeseries">Trends</button>
+                    <button class="nav-btn" data-page="bubble">Bubble Chart</button>
+                    <button class="nav-btn" data-page="butterfly">Pie Charts</button>
+                    <button class="nav-btn" data-page="maps">Choropleth Maps</button>
+                    <button class="nav-btn" data-page="timeseries">Line Graph</button>
                     <a class="nav-download" href="EMISSIONSVSGDP .xlsx" download title="Download data (XLSX)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
                     <button type="button" class="nav-back" data-page="home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
                 </div>
             </nav>
             <div class="container">
                 <div class="maps-controls">
+                    <div class="chart-info-wrap">
+                        <button class="chart-info-btn" type="button" aria-label="Chart info">i</button>
+                        <div class="chart-info-desc">A world map where each country is colored by a metric—either GDP per capita or CO₂ emissions per capita. Darker colors indicate higher values; lighter colors indicate lower values. Toggle between "GDP per Capita" and "CO₂ Emissions per Capita" to compare the two metrics; switch between a flat 2D map and an interactive 3D globe for a different perspective. Drag the year slider to see how the map changes from 1850 to 2022. These maps show where wealth and emissions are concentrated on Earth—how regional patterns of development and pollution have shifted over nearly two centuries of industrialization.</div>
+                    </div>
                     <label>Map:</label>
                     <button class="map-toggle-btn active" data-map="gdp">GDP per Capita</button>
                     <button class="map-toggle-btn" data-map="emissions">CO₂ Emissions per Capita</button>
@@ -1379,20 +1542,24 @@
         </div>
 
         <!-- Time series line chart page -->
-        <div class="page timeseries-page" id="page-timeseries">
+        <div class="page chart-page timeseries-page" id="page-timeseries">
             <nav class="nav-bar">
                 <span class="nav-title">Country Trends Over Time</span>
                 <div class="nav-buttons">
-                    <button class="nav-btn" data-page="bubble">Bubble</button>
-                    <button class="nav-btn" data-page="butterfly">Comparison</button>
-                    <button class="nav-btn" data-page="maps">Maps</button>
-                    <button class="nav-btn active" data-page="timeseries">Trends</button>
+                    <button class="nav-btn" data-page="bubble">Bubble Chart</button>
+                    <button class="nav-btn" data-page="butterfly">Pie Charts</button>
+                    <button class="nav-btn" data-page="maps">Choropleth Maps</button>
+                    <button class="nav-btn active" data-page="timeseries">Line Graph</button>
                     <a class="nav-download" href="EMISSIONSVSGDP .xlsx" download title="Download data (XLSX)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
                     <button type="button" class="nav-back" data-page="home" title="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
                 </div>
             </nav>
             <div class="container">
                 <div class="timeseries-controls">
+                    <div class="chart-info-wrap">
+                        <button class="chart-info-btn" type="button" aria-label="Chart info">i</button>
+                        <div class="chart-info-desc">A multi-line time series chart spanning 1850–2022. Each country is a colored line; the x-axis is year, the y-axis is GDP per capita or CO₂ emissions per capita. Add multiple countries and assign custom colors to track their paths through history. Use the country selector to add or remove countries; toggle between the two metrics; click the color swatch next to a country to change its line color. This chart tells the story of industrialization and growth—how different nations have risen or fallen in prosperity and emissions over time. Compare leaders and laggards, or trace a single country's journey through the Industrial Revolution to the present.</div>
+                    </div>
                     <div class="control-group">
                         <label>Chart:</label>
                         <div class="timeseries-chart-toggle-wrap">
@@ -1956,11 +2123,23 @@
                     if (words.length >= 2) return words.map(w => (w[0] || '').toUpperCase()).join('');
                     return country;
                 }
-                function buildDoubleRingData(yearData, top20) {
+                function computePieKPIs(yearData, n) {
+                    const worldGDP = yearData.reduce((s, d) => s + d.gdp_per_capita * d.population, 0);
+                    const worldEmissions = yearData.reduce((s, d) => s + d.emissions_per_capita * d.population, 0);
+                    const byEmissionsDesc = [...yearData].sort((a, b) => b.emissions_per_capita - a.emissions_per_capita);
+                    const byGdpDesc = [...yearData].sort((a, b) => b.gdp_per_capita - a.gdp_per_capita);
+                    const topNEmissions = byEmissionsDesc.slice(0, n);
+                    const topNGdp = byGdpDesc.slice(0, n);
+                    const sum = (arr, fn) => arr.reduce((s, d) => s + fn(d), 0);
+                    const topGdpPct = worldGDP > 0 ? (sum(topNGdp, d => d.gdp_per_capita * d.population) / worldGDP) * 100 : 0;
+                    const topEmissionsPct = worldEmissions > 0 ? (sum(topNEmissions, d => d.emissions_per_capita * d.population) / worldEmissions) * 100 : 0;
+                    return { topGdpPct, topEmissionsPct };
+                }
+                function buildDoubleRingData(yearData, top20, n) {
                     const byEmissions = [...yearData].sort((a, b) => top20 ? (b.emissions_per_capita - a.emissions_per_capita) : (a.emissions_per_capita - b.emissions_per_capita));
                     const byGdp = [...yearData].sort((a, b) => top20 ? (b.gdp_per_capita - a.gdp_per_capita) : (a.gdp_per_capita - b.gdp_per_capita));
-                    const outerSelected = byEmissions.slice(0, Math.min(12, byEmissions.length));
-                    const innerSelected = byGdp.slice(0, Math.min(12, byGdp.length));
+                    const outerSelected = byEmissions.slice(0, Math.min(n, byEmissions.length));
+                    const innerSelected = byGdp.slice(0, Math.min(n, byGdp.length));
                     const outerLabels = outerSelected.map(d => d.country);
                     const outerValues = outerSelected.map(d => d.emissions_per_capita);
                     const outerColors = outerSelected.map(d => countryToColor[d.country]);
@@ -2001,14 +2180,26 @@
 
                 function updatePies() {
                     const year = parseInt(slider.value);
+                    const topNEl = document.getElementById('pieTopN');
+                    const n = topNEl ? parseInt(topNEl.value) || 12 : 12;
                     if (display) { 
                         display.classList.add('updating'); 
                         display.textContent = year; 
                         setTimeout(() => display.classList.remove('updating'), 200); 
                     }
                     const yearData = getYearData(year);
-                    const topData = buildDoubleRingData(yearData, true);
-                    const bottomData = buildDoubleRingData(yearData, false);
+                    const topData = buildDoubleRingData(yearData, true, n);
+                    const bottomData = buildDoubleRingData(yearData, false, n);
+                    const kpis = computePieKPIs(yearData, n);
+                    const fmt = v => (v || 0).toFixed(1) + '%';
+                    const el = id => document.getElementById(id);
+                    if (el('pieKpiTopGdp')) el('pieKpiTopGdp').textContent = fmt(kpis.topGdpPct);
+                    if (el('pieKpiTopEmissions')) el('pieKpiTopEmissions').textContent = fmt(kpis.topEmissionsPct);
+                    if (el('pieKpiTopGdpLabel')) el('pieKpiTopGdpLabel').textContent = 'Top ' + n + ' % World GDP';
+                    if (el('pieKpiTopEmissionsLabel')) el('pieKpiTopEmissionsLabel').textContent = 'Top ' + n + ' % World CO₂';
+                    if (el('pieChartTopTitle')) el('pieChartTopTitle').textContent = 'Top ' + n + ' Countries';
+                    if (el('pieChartBottomTitle')) el('pieChartBottomTitle').textContent = 'Bottom ' + n + ' Countries';
+                    if (el('pieNavTitle')) el('pieNavTitle').textContent = 'Top & Bottom ' + n + ' Comparison — GDP & CO₂ with KPIs';
                     function makeDoubleRingTraces(d) {
                         const outerPull = d.outerLabels.map(c => highlightedCountry === c ? 0.05 : 0);
                         const innerPull = d.innerLabels.map(c => highlightedCountry === c ? 0.05 : 0);
@@ -2093,6 +2284,8 @@
                 });
 
                 slider.addEventListener('input', () => { if (playing) { playing = false; if (playInterval) clearInterval(playInterval); playBtn?.classList.remove('playing'); if (playIcon) playIcon.textContent = '▶'; if (playLabel) playLabel.textContent = 'Play'; } highlightedCountry = null; updatePies(); });
+                const topNSelect = document.getElementById('pieTopN');
+                if (topNSelect) topNSelect.addEventListener('change', () => { highlightedCountry = null; updatePies(); });
                 if (playBtn) playBtn.addEventListener('click', () => {
                     if (playing) {
                         playing = false;
