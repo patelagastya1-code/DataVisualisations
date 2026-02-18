@@ -171,13 +171,13 @@
             color: var(--white);
             border-color: rgba(255,255,255,0.4);
         }
-        .chart-info-desc {
+        .chart-info-desc-source { display: none; }
+        #chartInfoPopup {
             position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: min(420px, calc(100vw - 2rem));
-            max-height: 85vh;
+            bottom: 24px;
+            left: 24px;
+            width: min(380px, calc(100vw - 48px));
+            max-height: 70vh;
             padding: 1.25rem 1.5rem;
             background: rgba(17,17,17,0.98);
             border: 1px solid rgba(255,255,255,0.12);
@@ -187,19 +187,18 @@
             line-height: 1.6;
             color: var(--text-primary);
             box-shadow: 0 12px 48px rgba(0,0,0,0.6);
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 0.25s ease, visibility 0.25s ease;
             z-index: 1000;
             white-space: normal;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+            pointer-events: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
         }
-        .chart-info-wrap:hover .chart-info-desc {
+        #chartInfoPopup.visible {
             opacity: 1;
             visibility: visible;
-            pointer-events: auto;
         }
         .nav-back:hover,
         .nav-download:hover {
@@ -1198,7 +1197,7 @@
         /* Prevent overflow on zoom - use overflow containment */
         .page { overflow-x: hidden; }
         .container { overflow-x: hidden; max-width: 100%; }
-        .bubble-controls, .pie-controls, .maps-controls, .timeseries-controls { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .bubble-controls, .pie-controls, .maps-controls, .timeseries-controls { overflow: hidden; }
 
         /* AI Chatbot */
         .chatbot-widget {
@@ -1351,6 +1350,7 @@
 </head>
 <body>
     <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.27.0/plotly.min.js"></script>
+    <div id="chartInfoPopup"></div>
     <div class="app-wrapper">
         <canvas class="particles-canvas" id="particlesCanvas"></canvas>
 
@@ -1405,7 +1405,7 @@
                 <div class="bubble-controls">
                     <div class="chart-info-wrap">
                         <button class="chart-info-btn" type="button" aria-label="Chart info">i</button>
-                        <div class="chart-info-desc">An interactive scatter plot where each country is a bubble. GDP per capita runs along the x-axis and CO₂ emissions per capita along the y-axis, with bubble size representing population. Both axes use logarithmic scales to reveal patterns across vast ranges—from low-income nations to wealthy economies. Countries are colored by continent. Drag the year slider (1850–2022) to animate through history; use the country selector to add or remove countries for focused comparison; click a bubble to pin that country. The chart explores the link between economic development and environmental impact—do richer countries pollute more per person? Watch how the global distribution shifts as nations industrialize.</div>
+                        <span class="chart-info-desc-source">An interactive scatter plot where each country is a bubble. GDP per capita runs along the x-axis and CO₂ emissions per capita along the y-axis, with bubble size representing population. Both axes use logarithmic scales to reveal patterns across vast ranges—from low-income nations to wealthy economies. Countries are colored by continent. Drag the year slider (1850–2022) to animate through history; use the country selector to add or remove countries for focused comparison; click a bubble to pin that country. The chart explores the link between economic development and environmental impact—do richer countries pollute more per person? Watch how the global distribution shifts as nations industrialize.</span>
                     </div>
                     <div class="control-group">
                         <label>Countries</label>
@@ -1457,7 +1457,7 @@
                 <div class="pie-controls">
                     <div class="chart-info-wrap">
                         <button class="chart-info-btn" type="button" aria-label="Chart info">i</button>
-                        <div class="chart-info-desc">Two double-ring donut charts side by side—one for the top performers, one for the bottom. In each chart, the outer ring shows countries ranked by CO₂ emissions per capita; the inner ring shows countries ranked by GDP per capita. Choose how many countries to include (5, 10, 12, 15, or 20). KPI boxes show what share of world GDP and world CO₂ emissions those top countries represent. Use the year slider to move through 1850–2022; change the "Top" dropdown to adjust the number of countries; click a country in the legend to highlight it across both rings. This view reveals the concentration of wealth and emissions—how much of the world's economy and pollution is dominated by a handful of nations versus the long tail of smaller contributors.</div>
+                        <span class="chart-info-desc-source">Two double-ring donut charts side by side—one for the top performers, one for the bottom. In each chart, the outer ring shows countries ranked by CO₂ emissions per capita; the inner ring shows countries ranked by GDP per capita. Choose how many countries to include (5, 10, 12, 15, or 20). KPI boxes show what share of world GDP and world CO₂ emissions those top countries represent. Use the year slider to move through 1850–2022; change the "Top" dropdown to adjust the number of countries; click a country in the legend to highlight it across both rings. This view reveals the concentration of wealth and emissions—how much of the world's economy and pollution is dominated by a handful of nations versus the long tail of smaller contributors.</span>
                     </div>
                     <div class="pie-timeline">
                         <label>Year</label>
@@ -1525,7 +1525,7 @@
                 <div class="maps-controls">
                     <div class="chart-info-wrap">
                         <button class="chart-info-btn" type="button" aria-label="Chart info">i</button>
-                        <div class="chart-info-desc">A world map where each country is colored by a metric—either GDP per capita or CO₂ emissions per capita. Darker colors indicate higher values; lighter colors indicate lower values. Toggle between "GDP per Capita" and "CO₂ Emissions per Capita" to compare the two metrics; switch between a flat 2D map and an interactive 3D globe for a different perspective. Drag the year slider to see how the map changes from 1850 to 2022. These maps show where wealth and emissions are concentrated on Earth—how regional patterns of development and pollution have shifted over nearly two centuries of industrialization.</div>
+                        <span class="chart-info-desc-source">A world map where each country is colored by a metric—either GDP per capita or CO₂ emissions per capita. Darker colors indicate higher values; lighter colors indicate lower values. Toggle between "GDP per Capita" and "CO₂ Emissions per Capita" to compare the two metrics; switch between a flat 2D map and an interactive 3D globe for a different perspective. Drag the year slider to see how the map changes from 1850 to 2022. These maps show where wealth and emissions are concentrated on Earth—how regional patterns of development and pollution have shifted over nearly two centuries of industrialization.</span>
                     </div>
                     <label>Map:</label>
                     <button class="map-toggle-btn active" data-map="gdp">GDP per Capita</button>
@@ -1558,7 +1558,7 @@
                 <div class="timeseries-controls">
                     <div class="chart-info-wrap">
                         <button class="chart-info-btn" type="button" aria-label="Chart info">i</button>
-                        <div class="chart-info-desc">A multi-line time series chart spanning 1850–2022. Each country is a colored line; the x-axis is year, the y-axis is GDP per capita or CO₂ emissions per capita. Add multiple countries and assign custom colors to track their paths through history. Use the country selector to add or remove countries; toggle between the two metrics; click the color swatch next to a country to change its line color. This chart tells the story of industrialization and growth—how different nations have risen or fallen in prosperity and emissions over time. Compare leaders and laggards, or trace a single country's journey through the Industrial Revolution to the present.</div>
+                        <span class="chart-info-desc-source">A multi-line time series chart spanning 1850–2022. Each country is a colored line; the x-axis is year, the y-axis is GDP per capita or CO₂ emissions per capita. Add multiple countries and assign custom colors to track their paths through history. Use the country selector to add or remove countries; toggle between the two metrics; click the color swatch next to a country to change its line color. This chart tells the story of industrialization and growth—how different nations have risen or fallen in prosperity and emissions over time. Compare leaders and laggards, or trace a single country's journey through the Industrial Revolution to the present.</span>
                     </div>
                     <div class="control-group">
                         <label>Chart:</label>
@@ -2619,6 +2619,39 @@
                 window.addEventListener('load', check);
             }
         })();
+    </script>
+    <script>
+    (function() {
+        const popup = document.getElementById('chartInfoPopup');
+        let hideTimer = null;
+        function showPopup(content) {
+            if (popup) {
+                popup.innerHTML = content;
+                popup.classList.add('visible');
+                if (hideTimer) clearTimeout(hideTimer);
+            }
+        }
+        function hidePopup() {
+            if (popup) popup.classList.remove('visible');
+            hideTimer = null;
+        }
+        function scheduleHide() {
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(hidePopup, 200);
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.chart-info-wrap').forEach(function(wrap) {
+                const source = wrap.querySelector('.chart-info-desc-source');
+                if (!source || !popup) return;
+                wrap.addEventListener('mouseenter', function() { showPopup(source.textContent); });
+                wrap.addEventListener('mouseleave', function() { scheduleHide(); });
+            });
+            if (popup) {
+                popup.addEventListener('mouseenter', function() { if (hideTimer) clearTimeout(hideTimer); });
+                popup.addEventListener('mouseleave', function() { hidePopup(); });
+            }
+        });
+    })();
     </script>
 
     <!-- AI Data Chatbot -->
