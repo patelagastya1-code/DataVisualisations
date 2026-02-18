@@ -86,7 +86,7 @@
         }
         .nav-title {
             font-family: 'Sora', sans-serif;
-            font-size: 1rem;
+            font-size: 0.77rem;
             font-weight: 600;
             color: var(--white);
             letter-spacing: 0.03em;
@@ -1098,11 +1098,29 @@
             color: var(--bg-primary);
             border-color: var(--white);
         }
-        .timeseries-chart-toggle-wrap .timeseries-toggle-btn:hover:not(.active) {
+        .timeseries-chart-toggle-wrap .timeseries-toggle-btn:hover:not(.active),
+        .timeseries-chart-toggle-wrap .timeseries-scale-btn:hover:not(.active) {
             background: rgba(42,42,42,0.9);
             color: var(--white);
             border-color: rgba(255,255,255,0.3);
             transform: translateY(-2px);
+        }
+        .timeseries-chart-toggle-wrap .timeseries-scale-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(26,26,26,0.9);
+            color: var(--text-primary);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .timeseries-chart-toggle-wrap .timeseries-scale-btn.active {
+            background: var(--white);
+            color: var(--bg-primary);
+            border-color: var(--white);
         }
         .timeseries-chart-wrap {
             width: 100%;
@@ -1150,7 +1168,7 @@
             .page { padding: 1.25rem; }
             .chart-page { padding: 0.75rem 1.25rem 1rem; }
             .nav-bar { padding: 0.75rem 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
-            .nav-title { font-size: 0.9rem; }
+            .nav-title { font-size: 0.85rem; }
             .home-grid-section { grid-template-columns: 1fr; grid-template-rows: auto; gap: 0.75rem; padding: 1rem; }
             .pie-page .container { height: calc(100vh - 110px); max-height: calc(100vh - 110px); }
             .pie-chart-and-legend { grid-template-columns: 1fr; grid-template-rows: minmax(0, auto) 1fr; }
@@ -1391,7 +1409,7 @@
         <!-- Bubble chart page -->
         <div class="page chart-page" id="page-bubble">
             <nav class="nav-bar">
-                <span class="nav-title">CO₂ Emissions per Capita vs. GDP per Capita Bubble Chart</span>
+                <span class="nav-title">GDP per capita vs CO₂ emissions per capita by country Bubble Plot (1850–2022)</span>
                 <div class="nav-buttons">
                     <button class="nav-btn active" data-page="bubble">Bubble Chart</button>
                     <button class="nav-btn" data-page="butterfly">Pie Charts</button>
@@ -1443,7 +1461,7 @@
         <!-- Comparison pie charts page -->
         <div class="page chart-page pie-page" id="page-butterfly">
             <nav class="nav-bar">
-                <span class="nav-title" id="pieNavTitle">Top & Bottom 12 Comparison — GDP & CO₂ with KPIs</span>
+                <span class="nav-title" id="pieNavTitle">Comparison of Top & Bottom 12 countries in GDP and CO₂ per capita (1850-2022)</span>
                 <div class="nav-buttons">
                     <button class="nav-btn" data-page="bubble">Bubble Chart</button>
                     <button class="nav-btn active" data-page="butterfly">Pie Charts</button>
@@ -1511,7 +1529,7 @@
         <!-- Choropleth maps page -->
         <div class="page chart-page" id="page-maps">
             <nav class="nav-bar">
-                <span class="nav-title">Choropleth Maps</span>
+                <span class="nav-title" id="mapsNavTitle">World map of GDP per capita by country (1850–2022)</span>
                 <div class="nav-buttons">
                     <button class="nav-btn" data-page="bubble">Bubble Chart</button>
                     <button class="nav-btn" data-page="butterfly">Pie Charts</button>
@@ -1544,7 +1562,7 @@
         <!-- Time series line chart page -->
         <div class="page chart-page timeseries-page" id="page-timeseries">
             <nav class="nav-bar">
-                <span class="nav-title">Country Trends Over Time</span>
+                <span class="nav-title" id="timeseriesNavTitle">GDP per capita trends by country (1850–2022)</span>
                 <div class="nav-buttons">
                     <button class="nav-btn" data-page="bubble">Bubble Chart</button>
                     <button class="nav-btn" data-page="butterfly">Pie Charts</button>
@@ -1565,6 +1583,13 @@
                         <div class="timeseries-chart-toggle-wrap">
                             <button type="button" class="timeseries-toggle-btn active" data-metric="gdp">GDP per Capita</button>
                             <button type="button" class="timeseries-toggle-btn" data-metric="emissions">CO₂ Emissions</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Y-axis:</label>
+                        <div class="timeseries-chart-toggle-wrap">
+                            <button type="button" class="timeseries-scale-btn active" data-scale="log">Log</button>
+                            <button type="button" class="timeseries-scale-btn" data-scale="linear">Linear</button>
                         </div>
                     </div>
                     <div class="control-group">
@@ -2199,7 +2224,7 @@
                     if (el('pieKpiTopEmissionsLabel')) el('pieKpiTopEmissionsLabel').textContent = 'Top ' + n + ' % World CO₂';
                     if (el('pieChartTopTitle')) el('pieChartTopTitle').textContent = 'Top ' + n + ' Countries';
                     if (el('pieChartBottomTitle')) el('pieChartBottomTitle').textContent = 'Bottom ' + n + ' Countries';
-                    if (el('pieNavTitle')) el('pieNavTitle').textContent = 'Top & Bottom ' + n + ' Comparison — GDP & CO₂ with KPIs';
+                    if (el('pieNavTitle')) el('pieNavTitle').textContent = 'Comparison of Top & Bottom ' + n + ' countries in GDP and CO₂ per capita (1850-2022)';
                     function makeDoubleRingTraces(d) {
                         const outerPull = d.outerLabels.map(c => highlightedCountry === c ? 0.05 : 0);
                         const innerPull = d.innerLabels.map(c => highlightedCountry === c ? 0.05 : 0);
@@ -2339,6 +2364,8 @@
                     year = parseInt(yearSlider.value);
                     yearDisplay.classList.add('updating');
                     yearDisplay.textContent = year;
+                    const mapsNavEl = document.getElementById('mapsNavTitle');
+                    if (mapsNavEl) mapsNavEl.textContent = 'World map of ' + (currentMap === 'gdp' ? 'GDP per capita' : 'CO₂ emissions per capita') + ' by country for year ' + year + ' (1850–2022)';
                     setTimeout(() => yearDisplay.classList.remove('updating'), 200);
                     const mapData = getMapData(year, currentMap);
                     const locs = Object.keys(mapData);
@@ -2425,9 +2452,11 @@
             function initTimeseriesChart() {
                 const chartEl = document.getElementById('timeseriesChart');
                 const toggleBtns = document.querySelectorAll('.timeseries-toggle-btn');
+                const scaleBtns = document.querySelectorAll('.timeseries-scale-btn');
                 if (!chartEl || typeof Plotly === 'undefined') return;
 
                 let currentMetric = 'gdp';
+                let currentScale = 'log';
 
                 function getCountryTimeSeries() {
                     const byCountry = {};
@@ -2483,7 +2512,10 @@
                     const unselectedList = countries.filter(c => !timeseriesSelectedCountries.has(c));
                     const selectedContinents = [...timeseriesSelectedContinents].filter(c => continentMedians[c] && continentMedians[c].length > 0);
 
-                    const plotY = (v) => currentMetric === 'emissions' ? Math.max(0.01, v) : v;
+                    const plotY = (v) => {
+                        if (currentScale === 'linear') return v;
+                        return currentMetric === 'emissions' ? Math.max(0.01, v) : (v > 0 ? v : 1);
+                    };
                     const traces = [];
                     selectedContinents.forEach((cont, i) => {
                         const pts = continentMedians[cont];
@@ -2533,6 +2565,14 @@
                         });
                     });
 
+                    const allVisibleValues = [];
+                    selectedContinents.forEach(cont => {
+                        (continentMedians[cont] || []).forEach(p => allVisibleValues.push(p.value));
+                    });
+                    selectedList.forEach(c => (byCountry[c] || []).forEach(p => allVisibleValues.push(p.value)));
+                    unselectedList.forEach(c => (byCountry[c] || []).forEach(p => allVisibleValues.push(p.value)));
+                    const dataMax = allVisibleValues.length ? Math.max(...allVisibleValues) : 1;
+
                     const yTitle = currentMetric === 'gdp' ? 'GDP per capita ($)' : 'CO₂ emissions per capita (tonnes)';
                     const layout = {
                         title: { text: (currentMetric === 'gdp' ? 'GDP' : 'CO₂ Emissions') + ' per Capita Over Time (1850–2022)', font: { size: 16 }, x: 0.5, xanchor: 'center' },
@@ -2548,7 +2588,20 @@
                         },
                         yaxis: (() => {
                             const isGdp = currentMetric === 'gdp';
+                            const isLinear = currentScale === 'linear';
                             if (isGdp) {
+                                if (isLinear) {
+                                    const yMax = Math.max(dataMax * 1.08, 100);
+                                    return {
+                                        title: { text: yTitle },
+                                        type: 'linear',
+                                        range: [0, yMax],
+                                        tickformat: ',d',
+                                        gridcolor: 'rgba(255,255,255,0.06)',
+                                        zeroline: true,
+                                        zerolinecolor: 'rgba(255,255,255,0.15)'
+                                    };
+                                }
                                 return {
                                     title: { text: yTitle },
                                     type: 'log',
@@ -2556,6 +2609,18 @@
                                     ticktext: ['1k', '2k', '5k', '10k', '20k', '50k', '100k'],
                                     gridcolor: 'rgba(255,255,255,0.06)',
                                     zeroline: false
+                                };
+                            }
+                            if (isLinear) {
+                                const yMax = Math.max(dataMax * 1.08, 0.1);
+                                return {
+                                    title: { text: yTitle },
+                                    type: 'linear',
+                                    range: [0, yMax],
+                                    tickformat: ',.2f',
+                                    gridcolor: 'rgba(255,255,255,0.06)',
+                                    zeroline: true,
+                                    zerolinecolor: 'rgba(255,255,255,0.15)'
                                 };
                             }
                             return {
@@ -2592,12 +2657,22 @@
                             toggleBtns.forEach(b => b.classList.remove('active'));
                             btn.classList.add('active');
                             currentMetric = btn.dataset.metric;
+                            const tsNavEl = document.getElementById('timeseriesNavTitle');
+                            if (tsNavEl) tsNavEl.textContent = (currentMetric === 'gdp' ? 'GDP per capita' : 'CO₂ emissions per capita') + ' trends by country (1850–2022)';
                             const desc = document.getElementById('timeseriesDescription');
                             if (desc) {
                                 desc.innerHTML = currentMetric === 'gdp'
                                     ? '<strong>About this chart:</strong> GDP per capita over time (1850–2022). Select countries to highlight them. Unselected countries appear in faint gray. GDP in international-$ at 2011 prices. Data: Maddison Project Database 2023.'
                                     : '<strong>About this chart:</strong> CO₂ emissions per capita over time (1850–2022). Select countries to highlight them. Unselected countries appear in faint gray. Data: Global Carbon Budget (2025).';
                             }
+                            updateChart();
+                        });
+                    });
+                    scaleBtns.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            scaleBtns.forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            currentScale = btn.dataset.scale;
                             updateChart();
                         });
                     });
