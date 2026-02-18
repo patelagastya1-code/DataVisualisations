@@ -1462,7 +1462,7 @@
         <div class="page chart-page pie-page" id="page-butterfly">
             <nav class="nav-bar">
                 <span class="nav-title" id="pieNavTitle">Comparison of Top & Bottom 12 countries in GDP and CO₂ per capita (1850-2022)</span>
-                <div class="nav-buttons">
+add                <div class="nav-buttons">
                     <button class="nav-btn" data-page="bubble">Bubble Chart</button>
                     <button class="nav-btn active" data-page="butterfly">Pie Charts</button>
                     <button class="nav-btn" data-page="maps">Choropleth Maps</button>
@@ -2570,7 +2570,6 @@
                         (continentMedians[cont] || []).forEach(p => allVisibleValues.push(p.value));
                     });
                     selectedList.forEach(c => (byCountry[c] || []).forEach(p => allVisibleValues.push(p.value)));
-                    unselectedList.forEach(c => (byCountry[c] || []).forEach(p => allVisibleValues.push(p.value)));
                     const dataMax = allVisibleValues.length ? Math.max(...allVisibleValues) : 1;
 
                     const yTitle = currentMetric === 'gdp' ? 'GDP per capita ($)' : 'CO₂ emissions per capita (tonnes)';
