@@ -131929,7 +131929,7 @@
       "gdp_per_capita": 1300.502,
       "population": 1275602897,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -131938,7 +131938,7 @@
       "gdp_per_capita": 1543.2267,
       "population": 1340168478,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -131947,7 +131947,7 @@
       "gdp_per_capita": 2265.4688,
       "population": 1627273655,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -131956,7 +131956,7 @@
       "gdp_per_capita": 2493.3152,
       "population": 1895426673,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -131965,7 +131965,7 @@
       "gdp_per_capita": 3413.199,
       "population": 2291979566,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -131974,7 +131974,7 @@
       "gdp_per_capita": 3360.164,
       "population": 2493092852,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -131983,7 +131983,7 @@
       "gdp_per_capita": 4403.6543,
       "population": 3015470889,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -131992,7 +131992,7 @@
       "gdp_per_capita": 5970.6577,
       "population": 3694683794,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132001,7 +132001,7 @@
       "gdp_per_capita": 7239.1943,
       "population": 4447606240,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132010,7 +132010,7 @@
       "gdp_per_capita": 8210.969,
       "population": 5327803106,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132019,7 +132019,7 @@
       "gdp_per_capita": 9903.86,
       "population": 6171702992,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132028,7 +132028,7 @@
       "gdp_per_capita": 13121.591,
       "population": 7021732143,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132037,7 +132037,7 @@
       "gdp_per_capita": 14713.451,
       "population": 7470491876,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132046,7 +132046,7 @@
       "gdp_per_capita": 15029.054,
       "population": 7558554527,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132055,7 +132055,7 @@
       "gdp_per_capita": 15416.331,
       "population": 7645617952,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132064,7 +132064,7 @@
       "gdp_per_capita": 15814.849,
       "population": 7729902779,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132073,7 +132073,7 @@
       "gdp_per_capita": 16091.449,
       "population": 7811293699,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132082,7 +132082,7 @@
       "gdp_per_capita": 15461.187,
       "population": 7887001289,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132091,7 +132091,7 @@
       "gdp_per_capita": 16282.981,
       "population": 7954448387,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "World",
@@ -132100,7 +132100,7 @@
       "gdp_per_capita": 16676.75,
       "population": 8021407196,
       "continent": "World",
-      "iso_code": NaN
+      "iso_code": null
     },
     {
       "country": "Yemen",

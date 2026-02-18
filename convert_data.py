@@ -4,6 +4,18 @@ Convert EMISSIONSVSGDP Excel or CSV data to JSON for the visualization.
 import pandas as pd
 import json
 import os
+import math
+
+
+def sanitize_for_json(obj):
+    """Replace NaN/Inf with None for valid JSON output."""
+    if isinstance(obj, dict):
+        return {k: sanitize_for_json(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [sanitize_for_json(v) for v in obj]
+    if isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
+        return None
+    return obj
 
 # Country to continent mapping (7 continents)
 COUNTRY_TO_CONTINENT = {
@@ -57,10 +69,10 @@ COUNTRY_TO_CONTINENT = {
 def convert_to_json():
     if os.path.exists('EMISSIONSVSGDP.csv'):
         df = pd.read_csv('EMISSIONSVSGDP.csv')
-    elif os.path.exists('EMISSIONSVSGDP .xlsx'):
-        df = pd.read_excel('EMISSIONSVSGDP .xlsx')
+    elif os.path.exists('EMISSIONSVSGDP.xlsx'):
+        df = pd.read_excel('EMISSIONSVSGDP.xlsx')
     else:
-        raise FileNotFoundError('No EMISSIONSVSGDP.csv or EMISSIONSVSGDP .xlsx found')
+        raise FileNotFoundError('No EMISSIONSVSGDP.csv or EMISSIONSVSGDP.xlsx found')
     
     # Clean column names for JSON
     df = df.rename(columns={
@@ -77,8 +89,8 @@ def convert_to_json():
     # Add continent to each record
     df['continent'] = df['country'].map(COUNTRY_TO_CONTINENT).fillna('Other')
     
-    # Convert to list of records
-    data = df.to_dict(orient='records')
+    # Convert to list of records, sanitize NaN/Inf for valid JSON
+    data = sanitize_for_json(df.to_dict(orient='records'))
     
     # Get unique countries and years for quick reference
     countries = sorted(df['country'].unique().tolist())
