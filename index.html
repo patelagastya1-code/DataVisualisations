@@ -1068,8 +1068,8 @@
         .timeseries-page .container { max-width: 1400px; margin: 0 auto; }
         .timeseries-controls {
             display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
+            flex-wrap: nowrap;
+            gap: 1rem;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.5rem;
@@ -1079,7 +1079,9 @@
             border-radius: 12px;
             animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
         }
-        .timeseries-controls label { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
+        .timeseries-controls label { font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); white-space: nowrap; }
+        .timeseries-controls .control-group { flex-shrink: 0; white-space: nowrap; }
+        .timeseries-controls .chart-info-wrap { flex-shrink: 0; }
         .timeseries-chart-toggle-wrap { display: flex; gap: 0.5rem; align-items: center; }
         .timeseries-chart-toggle-wrap .timeseries-toggle-btn {
             padding: 0.5rem 1rem;
@@ -1121,6 +1123,29 @@
             background: var(--white);
             color: var(--bg-primary);
             border-color: var(--white);
+        }
+        .timeseries-chart-toggle-wrap .timeseries-proj-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(26,26,26,0.9);
+            color: var(--text-primary);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .timeseries-chart-toggle-wrap .timeseries-proj-btn.active {
+            background: var(--white);
+            color: var(--bg-primary);
+            border-color: var(--white);
+        }
+        .timeseries-chart-toggle-wrap .timeseries-proj-btn:hover:not(.active) {
+            background: rgba(42,42,42,0.9);
+            color: var(--white);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
         }
         .timeseries-chart-wrap {
             width: 100%;
@@ -1187,7 +1212,8 @@
             .home-section { padding: 1.5rem; }
             .home-title { font-size: clamp(1.5rem, 5vw, 2.5rem); }
             .home-subtitle { font-size: clamp(0.85rem, 1.5vw, 1rem); }
-            .bubble-controls, .pie-controls, .maps-controls, .timeseries-controls { flex-direction: column; align-items: stretch; gap: 1rem; }
+            .bubble-controls, .pie-controls, .maps-controls { flex-direction: column; align-items: stretch; gap: 1rem; }
+            .timeseries-controls { gap: 0.75rem; padding: 0.75rem 1rem; overflow-x: auto; justify-content: flex-start; }
             .pie-timeline { justify-content: center; }
             .pie-kpis { justify-content: center; }
             .control-group:not(:first-child)::before { display: none; }
@@ -1215,7 +1241,8 @@
         /* Prevent overflow on zoom - use overflow containment */
         .page { overflow-x: hidden; }
         .container { overflow-x: hidden; max-width: 100%; }
-        .bubble-controls, .pie-controls, .maps-controls, .timeseries-controls { overflow: hidden; }
+        .bubble-controls, .pie-controls, .maps-controls { overflow: hidden; }
+        .timeseries-controls { overflow: hidden; }
 
         /* AI Chatbot */
         .chatbot-widget {
@@ -1590,6 +1617,13 @@ add                <div class="nav-buttons">
                         <div class="timeseries-chart-toggle-wrap">
                             <button type="button" class="timeseries-scale-btn active" data-scale="log">Log</button>
                             <button type="button" class="timeseries-scale-btn" data-scale="linear">Linear</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Projections:</label>
+                        <div class="timeseries-chart-toggle-wrap">
+                            <button type="button" class="timeseries-proj-btn active" data-proj="off">Off</button>
+                            <button type="button" class="timeseries-proj-btn" data-proj="on">On</button>
                         </div>
                     </div>
                     <div class="control-group">
@@ -1991,12 +2025,12 @@ add                <div class="nav-buttons">
                 const EMISSION_TICKS = [0.1, 1, 10, 100];
                 function getPlotlyData(year) {
                     const yearData = getDataForYear(year);
-                    const yearTotalPop = data.filter(x => x.year === year).reduce((s, d) => s + d.population, 0);
+                    const yearTotalPop = data.filter(x => x.year === year && x.country !== 'World').reduce((s, d) => s + d.population, 0);
                     const hasSelection = selectedCountries.size > 0;
                     const selectedData = hasSelection ? yearData.filter(d => selectedCountries.has(d.country)) : yearData;
                     const unselectedData = hasSelection ? yearData.filter(d => !selectedCountries.has(d.country)) : [];
                     function makeText(d) {
-                        const popPct = yearTotalPop > 0 ? ((d.population / yearTotalPop) * 100).toFixed(2) : '0';
+                        const popPct = d.country === 'World' ? null : (yearTotalPop > 0 ? ((d.population / yearTotalPop) * 100).toFixed(2) : '0');
                         return '<span style="font-family:Sora,sans-serif;font-size:14px;font-weight:600;color:#fff">' + d.country + '</span>' +
                             '<span style="font-size:11px;color:#94a3b8;margin-left:6px">' + (d.continent || '') + '</span>' +
                             '<br><br>' +
@@ -2010,7 +2044,7 @@ add                <div class="nav-buttons">
                             '<br><br>' +
                             '<span style="font-size:11px;color:#94a3b8">Population</span><br>' +
                             '<span style="font-size:13px;font-weight:500;color:#e2e8f0">' + d.population.toLocaleString() + '</span>' +
-                            '<span style="font-size:10px;color:#64748b;margin-left:4px">(' + popPct + '% of world)</span>';
+                            (popPct != null ? '<span style="font-size:10px;color:#64748b;margin-left:4px">(' + popPct + '% of world)</span>' : '');
                     }
                     const traces = [];
                     const hasSelectedWithData = hasSelection && selectedData.length > 0;
@@ -2454,6 +2488,39 @@ add                <div class="nav-buttons">
 
                 let currentMetric = 'gdp';
                 let currentScale = 'log';
+                let showProjections = false;
+                const PROJECTION_YEARS = 40;
+                const PROJECTION_FIT_WINDOW = 20;
+
+                function projectSeries(pts) {
+                    if (!pts || pts.length < 3) return [];
+                    const lastYear = pts[pts.length - 1].year;
+                    const fitPts = pts.filter(p => p.year >= lastYear - PROJECTION_FIT_WINDOW && p.value > 0);
+                    if (fitPts.length < 2) return [];
+
+                    const logVals = fitPts.map(p => ({ x: p.year, y: Math.log(Math.max(p.value, 1e-6)) }));
+                    const n = logVals.length;
+                    const sumX = logVals.reduce((s, p) => s + p.x, 0);
+                    const sumY = logVals.reduce((s, p) => s + p.y, 0);
+                    const sumXY = logVals.reduce((s, p) => s + p.x * p.y, 0);
+                    const sumX2 = logVals.reduce((s, p) => s + p.x * p.x, 0);
+                    const denom = n * sumX2 - sumX * sumX;
+                    if (Math.abs(denom) < 1e-12) return [];
+                    const slope = (n * sumXY - sumX * sumY) / denom;
+                    const intercept = (sumY - slope * sumX) / n;
+
+                    const cappedSlope = Math.max(-0.05, Math.min(slope, 0.05));
+
+                    const projected = [];
+                    const lastVal = pts[pts.length - 1].value;
+                    projected.push({ year: lastYear, value: lastVal });
+                    for (let i = 1; i <= PROJECTION_YEARS; i++) {
+                        const yr = lastYear + i;
+                        const val = Math.exp(intercept + cappedSlope * yr);
+                        projected.push({ year: yr, value: Math.max(0, val) });
+                    }
+                    return projected;
+                }
 
                 function getCountryTimeSeries() {
                     const byCountry = {};
@@ -2567,11 +2634,59 @@ add                <div class="nav-buttons">
                         (continentMedians[cont] || []).forEach(p => allVisibleValues.push(p.value));
                     });
                     selectedList.forEach(c => (byCountry[c] || []).forEach(p => allVisibleValues.push(p.value)));
+
+                    if (showProjections) {
+                        selectedContinents.forEach((cont, i) => {
+                            const pts = continentMedians[cont];
+                            if (!pts || pts.length < 3) return;
+                            const proj = projectSeries(pts);
+                            if (!proj.length) return;
+                            const color = TIMESERIES_COLORS[i % TIMESERIES_COLORS.length];
+                            proj.forEach(p => allVisibleValues.push(p.value));
+                            traces.push({
+                                type: 'scatter',
+                                mode: 'lines',
+                                name: cont + ' (projected)',
+                                x: proj.map(p => p.year),
+                                y: proj.map(p => plotY(p.value)),
+                                hovertemplate: '<b>' + cont + ' (projected)</b><br>Year: %{x}<br>' + (currentMetric === 'gdp' ? 'GDP per capita: $%{y:,.0f}' : 'CO₂ per capita: %{y:.2f} tonnes') + '<extra></extra>',
+                                line: { color: color, width: 2, dash: 'dot' },
+                                showlegend: false,
+                                connectgaps: false
+                            });
+                        });
+                        selectedList.forEach((country, i) => {
+                            const pts = byCountry[country];
+                            if (!pts || pts.length < 3) return;
+                            const proj = projectSeries(pts);
+                            if (!proj.length) return;
+                            const color = TIMESERIES_COLORS[(selectedContinents.length + i) % TIMESERIES_COLORS.length];
+                            proj.forEach(p => allVisibleValues.push(p.value));
+                            traces.push({
+                                type: 'scatter',
+                                mode: 'lines',
+                                name: country + ' (projected)',
+                                x: proj.map(p => p.year),
+                                y: proj.map(p => plotY(p.value)),
+                                hovertemplate: '<b>' + country + ' (projected)</b><br>Year: %{x}<br>' + (currentMetric === 'gdp' ? 'GDP per capita: $%{y:,.0f}' : 'CO₂ per capita: %{y:.2f} tonnes') + '<extra></extra>',
+                                line: { color: color, width: 2, dash: 'dot' },
+                                showlegend: false,
+                                connectgaps: false
+                            });
+                        });
+                    }
+
                     const dataMax = allVisibleValues.length ? Math.max(...allVisibleValues) : 1;
+
+                    const lastDataYear = 2022;
+                    const xEnd = showProjections ? lastDataYear + PROJECTION_YEARS + 2 : 2024;
+                    const titleYears = showProjections
+                        ? '(1850–2022, projected to ' + (lastDataYear + PROJECTION_YEARS) + ')'
+                        : '(1850–2022)';
 
                     const yTitle = currentMetric === 'gdp' ? 'GDP per capita ($)' : 'CO₂ emissions per capita (tonnes)';
                     const layout = {
-                        title: { text: (currentMetric === 'gdp' ? 'GDP' : 'CO₂ Emissions') + ' per Capita Over Time (1850–2022)', font: { size: 16 }, x: 0.5, xanchor: 'center' },
+                        title: { text: (currentMetric === 'gdp' ? 'GDP' : 'CO₂ Emissions') + ' per Capita Over Time ' + titleYears, font: { size: 16 }, x: 0.5, xanchor: 'center' },
                         paper_bgcolor: 'rgba(0,0,0,0)',
                         plot_bgcolor: 'rgba(0,0,0,0)',
                         margin: { t: 70, r: 40, b: 60, l: 70 },
@@ -2580,7 +2695,7 @@ add                <div class="nav-buttons">
                             title: { text: 'Year' },
                             gridcolor: 'rgba(255,255,255,0.06)',
                             zeroline: false,
-                            range: [1848, 2024]
+                            range: [1848, xEnd]
                         },
                         yaxis: (() => {
                             const isGdp = currentMetric === 'gdp';
@@ -2598,14 +2713,17 @@ add                <div class="nav-buttons">
                                         zerolinecolor: 'rgba(255,255,255,0.15)'
                                     };
                                 }
-                                return {
+                                const logMax = showProjections ? Math.log10(Math.max(dataMax, 1000)) + 0.15 : undefined;
+                                const baseAxis = {
                                     title: { text: yTitle },
                                     type: 'log',
-                                    tickvals: [1000, 2000, 5000, 10000, 20000, 50000, 100000],
-                                    ticktext: ['1k', '2k', '5k', '10k', '20k', '50k', '100k'],
+                                    tickvals: [1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000],
+                                    ticktext: ['1k', '2k', '5k', '10k', '20k', '50k', '100k', '200k', '500k'],
                                     gridcolor: 'rgba(255,255,255,0.06)',
                                     zeroline: false
                                 };
+                                if (showProjections && logMax) baseAxis.range = [Math.log10(800), logMax];
+                                return baseAxis;
                             }
                             if (isLinear) {
                                 const yMax = Math.max(dataMax * 1.08, 0.1);
@@ -2619,12 +2737,13 @@ add                <div class="nav-buttons">
                                     zerolinecolor: 'rgba(255,255,255,0.15)'
                                 };
                             }
+                            const logMax = showProjections ? Math.log10(Math.max(dataMax, 0.1)) + 0.15 : 2.8;
                             return {
                                 title: { text: yTitle },
                                 type: 'log',
-                                tickvals: [0.01, 0.1, 10, 100],
-                                ticktext: ['0', '0.1', '10', '100'],
-                                range: [-2.05, 2.8],
+                                tickvals: [0.01, 0.1, 1, 10, 100, 1000],
+                                ticktext: ['0.01', '0.1', '1', '10', '100', '1000'],
+                                range: [-2.05, logMax],
                                 gridcolor: 'rgba(255,255,255,0.06)',
                                 zeroline: false
                             };
@@ -2632,7 +2751,23 @@ add                <div class="nav-buttons">
                         showlegend: true,
                         legend: { x: 1.02, y: 1, xanchor: 'left', bgcolor: 'rgba(0,0,0,0)', font: { color: '#e5e5e5' } },
                         hoverlabel: { bgcolor: '#1a1a1a', bordercolor: '#2a2a2a', font: { color: '#e5e5e5' }, namelength: -1 },
-                        height: Math.min(580, Math.max(400, chartEl.clientHeight || chartEl.offsetHeight || 450))
+                        height: Math.min(580, Math.max(400, chartEl.clientHeight || chartEl.offsetHeight || 450)),
+                        shapes: showProjections ? [{
+                            type: 'line',
+                            x0: lastDataYear, x1: lastDataYear,
+                            y0: 0, y1: 1,
+                            yref: 'paper',
+                            line: { color: 'rgba(255,255,255,0.25)', width: 1.5, dash: 'dash' }
+                        }] : [],
+                        annotations: showProjections ? [{
+                            x: lastDataYear + 1,
+                            y: 1,
+                            yref: 'paper',
+                            text: 'Projected',
+                            showarrow: false,
+                            font: { color: 'rgba(255,255,255,0.45)', size: 11 },
+                            xanchor: 'left'
+                        }] : []
                     };
 
                     if (traces.length === 0) {
@@ -2669,6 +2804,15 @@ add                <div class="nav-buttons">
                             scaleBtns.forEach(b => b.classList.remove('active'));
                             btn.classList.add('active');
                             currentScale = btn.dataset.scale;
+                            updateChart();
+                        });
+                    });
+                    const projBtns = document.querySelectorAll('.timeseries-proj-btn');
+                    projBtns.forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            projBtns.forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                            showProjections = btn.dataset.proj === 'on';
                             updateChart();
                         });
                     });
